@@ -1,3 +1,4 @@
+package uno.logic;
 import java.util.*;
 
 
@@ -15,10 +16,14 @@ public class Deck {
 		return cards;
 	}
 	
+	public ArrayList<Card> getPlayedCards() {
+		return playedCards;
+	}
+	
 	/**
 	 * Adds all the cards we're using to our deck
 	 */
-	void setupDeck() { 
+	public void setupDeck() { 
 		for(int i = 0; i <= 9; i++){
 			cards.add(new Card(Color.RED, Type.NUMBER, i));		
 			cards.add(new Card(Color.YELLOW, Type.NUMBER, i));
@@ -43,14 +48,14 @@ public class Deck {
 			cards.add(new Card(Color.BLACK, Type.WILD, -1));
 			cards.add(new Card(Color.BLACK, Type.WILD_DRAW, -1));
 		}
-		
+		//shuffle();
 	}
 	
 	/**
 	 * 
 	 * Implementations of Fisher-Yates Shuffle algoritm
 	 */
-	void shuffle() {
+	public void shuffle() {
 		int length = cards.size();
 		for (int i = 0; i < length; i++) {
 			int r = i + (int)(Math.random() * (length - i));
@@ -59,5 +64,22 @@ public class Deck {
 			cards.set(i, temp);
 		}
 	}
+	/**
+	 * 
+	 * Returns the first card in our deck collection and then removes it
+	 * If the last card is drawn it takes the currently played cards and shuffles them into a new deck
+	 */
+	
+	public Card draw() {
+		Card temp = cards.get(0);
+		cards.remove(0);
+		if(cards.isEmpty()) {
+			cards.addAll(playedCards);
+			playedCards.clear();
+			shuffle();
+		}
+		return temp;
+	}
+	
 	
 }

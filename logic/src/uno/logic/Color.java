@@ -1,3 +1,4 @@
+package uno.logic;
 
 public enum Color {
 	RED,

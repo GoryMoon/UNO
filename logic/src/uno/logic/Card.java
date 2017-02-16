@@ -1,3 +1,6 @@
+package uno.logic;
+
+
 
 public class Card {
 	Color color;
