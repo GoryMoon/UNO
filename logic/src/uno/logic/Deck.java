@@ -74,11 +74,18 @@ public class Deck {
 		Card temp = cards.get(0);
 		cards.remove(0);
 		if(cards.isEmpty()) {
-			cards.addAll(playedCards);
-			playedCards.clear();
-			shuffle();
+			mergeDecks();
 		}
 		return temp;
+	}
+	/*
+	 *  Takes the playedCards deck and shuffles it into the cards deck 
+	 */
+	
+	public void mergeDecks() {
+		cards.addAll(playedCards);
+		playedCards.clear();
+		shuffle();
 	}
 	
 	

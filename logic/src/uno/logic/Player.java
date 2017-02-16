@@ -29,7 +29,7 @@ public class Player {
 		return cards;
 	}
 	
-	public String name() {
+	public String getName() {
 		return name;
 	}
 }
