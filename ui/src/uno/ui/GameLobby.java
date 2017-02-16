@@ -21,7 +21,7 @@ public class GameLobby implements IScreen {
         Container contentPane = frame.getContentPane();
         contentPane.setLayout(new BorderLayout(6, 6));
 
-        JLabel background = new JLabel(new ImageIcon("backgroundGL.png"));
+        JLabel background = new JLabel(new ImageIcon("resources/backgrounds/backgroundGL.png"));
         background.setLayout(new FlowLayout());
         contentPane.add(background);
 
