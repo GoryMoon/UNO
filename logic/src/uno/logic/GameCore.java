@@ -53,6 +53,15 @@ public class GameCore {
 		Card temp = deck.getPlayedCards().get(0);
 		if((card.color == temp.color) ||  ((card.type == temp.type) && card.number == temp.number) || (card.type == Type.WILD) || (card.type == Type.WILD_DRAW)) {
 			deck.getPlayedCards().add(0, card);
+			switch(card.type){
+				case DRAW: drawEffect(2); break;
+				case NUMBER: break;
+				case REVERSE: reverseEffect();
+				case SKIP: skipEffect(); break;
+				case WILD: break;
+				case WILD_DRAW: drawEffect(4); break;
+				
+			}
 		}
 		else{
 			return;

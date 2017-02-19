@@ -74,5 +74,39 @@ public class GameCoreTest {
 		gameCore.setupGame(4);
 		gameCore.skipEffect();
 	}
+	
+	@Test
+	public void executeCard() {
+		gameCore = new GameCore();
+		gameCore.setupGame(4);
+		gameCore.executeCard(new Card(Color.RED, Type.DRAW, -1));
+		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.RED, Type.DRAW, -1));
+		assertEquals(gameCore.getPlayers().get(1).getCards().size(), 9);
+		assertEquals(gameCore.getSkippedPlayers().get(0).intValue(), 1);
+		gameCore.executeCard(new Card(Color.BLUE, Type.REVERSE, -1));
+		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.RED, Type.DRAW, -1));
+		gameCore.executeCard(new Card(Color.RED, Type.REVERSE, -1));
+		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.RED, Type.REVERSE, -1));
+		assertTrue(!gameCore.getTurnOrder());
+		gameCore.executeCard(new Card(Color.BLUE, Type.REVERSE, -1));
+		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.BLUE, Type.REVERSE, -1));
+		assertTrue(gameCore.getTurnOrder());
+		gameCore.executeCard(new Card(Color.BLUE, Type.NUMBER, 2));
+		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.BLUE, Type.NUMBER, 2));
+		gameCore.executeCard(new Card(Color.GREEN, Type.NUMBER, 3));
+		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.BLUE, Type.NUMBER, 2));
+		gameCore.executeCard(new Card(Color.GREEN, Type.NUMBER, 2));
+		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.GREEN, Type.NUMBER, 2));
+
+
+
+
+
+
+
+
+
+		
+	}
 
 }
