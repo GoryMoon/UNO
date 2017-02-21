@@ -3,40 +3,50 @@ package uno.logic;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.UUID;
+
 
 import org.junit.Test;
 import org.junit.Before;
 
+import uno.server.core.GameServer;
+/**
+ * 
+ * @author nakhle
+ * @version
+ */
 public class GameCoreTest {
 	
 	private GameCore gameCore;
-	private ArrayList<Player> players;
-	private int currentPlayerIndex;
-	private ArrayList<Integer> skippedPlayers;
-	private boolean clockwise;
+	private ArrayList<UUID> uuids;
+	private GameServer gameServer;
 	
 	
 	
 	@Before
 	public void setUp(){
-		gameCore = new GameCore();
-		players = new ArrayList<Player>();
-		skippedPlayers = new ArrayList<Integer>();
-		clockwise = true;
+		gameCore = new GameCore(null);
+		uuids = new ArrayList<UUID>();
+		uuids.add(UUID.randomUUID());
+		uuids.add(UUID.randomUUID());
+		uuids.add(UUID.randomUUID());
+		uuids.add(UUID.randomUUID());
+		uuids.add(UUID.randomUUID());
 		
+	
 	}
 
 	@Test
 	public void firstDrawTest() {
-		gameCore.setupGame(4);
+		gameCore.setupGame(4, uuids);
 		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.RED, Type.NUMBER, 7));
 		
 	}
 	
 	@Test
 	public void firstDrawEffectsTest(){
-		gameCore = new GameCore();
-		gameCore.setupGame(4);
+		gameCore = new GameCore(null);
+		gameCore.setupGame(4, uuids);
 		gameCore.deck.getCards().add(0, new Card(Color.RED, Type.DRAW, 1));
 		gameCore.firstDraw();
 		assertEquals(gameCore.getPlayers().get(1).getCards().size(), 9);
@@ -52,8 +62,8 @@ public class GameCoreTest {
 	
 	@Test
 	public void drawEffectTest(){
-		gameCore = new GameCore();
-		gameCore.setupGame(4);
+		gameCore = new GameCore(null);
+		gameCore.setupGame(4, uuids);
 		gameCore.drawEffect(2);
 		assertEquals(gameCore.getPlayers().get(1).getCards().size(), 9);
 		assertEquals(gameCore.getSkippedPlayers().get(0).intValue(), 1);
@@ -61,8 +71,8 @@ public class GameCoreTest {
 	
 	@Test
 	public void reverseEffectTest() {
-		gameCore = new GameCore();
-		gameCore.setupGame(4);
+		gameCore = new GameCore(null);
+		gameCore.setupGame(4, uuids);
 		gameCore.reverseEffect();
 		assertTrue(!gameCore.getTurnOrder());
 		
@@ -70,15 +80,15 @@ public class GameCoreTest {
 	
 	@Test
 	public void skipEffectTest() {
-		gameCore = new GameCore();
-		gameCore.setupGame(4);
+		gameCore = new GameCore(null);
+		gameCore.setupGame(4, uuids);
 		gameCore.skipEffect();
 	}
 	
 	@Test
 	public void executeCard() {
-		gameCore = new GameCore();
-		gameCore.setupGame(4);
+		gameCore = new GameCore(null);
+		gameCore.setupGame(4, uuids);
 		gameCore.executeCard(new Card(Color.RED, Type.DRAW, -1));
 		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.RED, Type.DRAW, -1));
 		assertEquals(gameCore.getPlayers().get(1).getCards().size(), 9);
@@ -97,16 +107,10 @@ public class GameCoreTest {
 		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.BLUE, Type.NUMBER, 2));
 		gameCore.executeCard(new Card(Color.GREEN, Type.NUMBER, 2));
 		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.GREEN, Type.NUMBER, 2));
-
-
-
-
-
-
-
-
-
 		
 	}
+	
+	
+	
 
 }
