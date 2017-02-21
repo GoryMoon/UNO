@@ -26,7 +26,15 @@ public class GameLobby implements IScreen {
         contentPane.add(background);
 
         JButton LeaveButton = new JButton("leave");
+
         JButton PlayGameButton = new JButton("Play Game");
+        PlayGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PlayArea play = new PlayArea();
+                main.setScreen(play);
+            }
+        });
 
         LeaveButton.addActionListener(new ActionListener() {
             @Override

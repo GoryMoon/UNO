@@ -22,7 +22,7 @@ public class ErrorScreen implements IScreen{
         Container contentPane = frame.getContentPane();
         contentPane.setLayout(new BorderLayout(6, 6));
 
-        JLabel background = new JLabel(new ImageIcon("resources/backgrounds/background2.jpg"));
+        JLabel background = new JLabel(new ImageIcon("resources/backgrounds/background3.jpg"));
         background.setLayout(new FlowLayout());
         contentPane.add(background);
 
