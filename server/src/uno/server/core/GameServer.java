@@ -77,6 +77,10 @@ public class GameServer implements IServerMessageListener {
         }
     }
 
+    public ServerInteractions getInteractions() {
+        return interactions;
+    }
+
     public void sendToAllPlayers(String message) {
         networkServer.sendToAllPlayers(new Packet(MessageType.MESSAGE, message));
     }
