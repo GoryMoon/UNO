@@ -37,7 +37,7 @@ public class PlayArea implements IScreen {
         drawCard.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JButton card2 = new JButton(new ImageIcon("resources/cards/2green.png"));
+                JButton card2 = new JButton(new ImageIcon("resources/cards/wildred.png"));
                 panel1.add(card2);
                 frame.pack();  //måste forma om när man har ändrat.
             }
