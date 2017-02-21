@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Random;
 
-public class GameClient implements Runnable {
+public class NetworkClient implements Runnable {
 
     private String hostname;
     private int port;
@@ -26,7 +26,7 @@ public class GameClient implements Runnable {
     private boolean stopped;
     private Player player;
 
-    public GameClient(IClientMessageListener listener, String hostname, int port) {
+    public NetworkClient(IClientMessageListener listener, String hostname, int port) {
         this.listener = listener;
         this.hostname = hostname;
         this.port = port;

@@ -4,33 +4,34 @@ import uno.network.api.IServerMessageListener;
 import uno.network.api.MessageType;
 import uno.network.api.Packet;
 import uno.network.api.Player;
-import uno.network.server.GameServer;
+import uno.network.server.NetworkServer;
 
+import java.net.Socket;
 import java.util.Scanner;
 
 public class TestServer implements IServerMessageListener {
 
-    private GameServer gameServer;
+    private NetworkServer networkServer;
     private Scanner scanner;
 
     public TestServer(String port, String players) {
-        gameServer = new GameServer(this, Integer.parseInt(port), Integer.parseInt(players));
+        networkServer = new NetworkServer(this, Integer.parseInt(port), Integer.parseInt(players));
         scanner = new Scanner(System.in);
         String in;
         loop: while (true) {
             in = scanner.nextLine();
             switch (in.substring(0, in.contains(" ") ? in.indexOf(' '): in.length())) {
                 case "start":
-                    gameServer.start();
+                    networkServer.start();
                     break;
                 case "send":
                     if (in.length() > 4) {
-                        gameServer.sendToAllPlayers(new Packet(MessageType.MESSAGE, in.substring(5)));
+                        networkServer.sendToAllPlayers(new Packet(MessageType.MESSAGE, in.substring(5)));
                         System.out.println("Message sent!");
                     }
                     break;
                 case "stop":
-                    gameServer.stop();
+                    networkServer.stop();
                     break loop;
                 default:
                     System.out.println("Unknown command!");
@@ -40,6 +41,11 @@ public class TestServer implements IServerMessageListener {
 
     public static void main(String[] args) {
         new TestServer(args[0], args[1]);
+    }
+
+    @Override
+    public boolean onPrePlayerConnect(Socket socket) {
+        return true;
     }
 
     @Override
@@ -55,6 +61,6 @@ public class TestServer implements IServerMessageListener {
     @Override
     public void onMessageReceived(Player player, MessageType type, Object    message) {
         System.out.println("Message from player (" + player.getAddress() + ": " + player.getID() + ") with type (" + type.toString() + "): " + message);
-        gameServer.sendToAllExcept(player, new Packet(type, message));
+        networkServer.sendToAllExcept(player, new Packet(type, message));
     }
 }

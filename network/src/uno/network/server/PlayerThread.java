@@ -13,15 +13,15 @@ import java.net.SocketException;
 
 public class PlayerThread extends Thread {
 
-    private GameServer server;
+    private NetworkServer server;
     private Socket socket;
     private Player player;
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private boolean running = true;
 
-    public PlayerThread(GameServer gameServer, Socket socket, Player player) {
-        this.server = gameServer;
+    public PlayerThread(NetworkServer networkServer, Socket socket, Player player) {
+        this.server = networkServer;
         this.socket = socket;
         this.player = player;
         try {
