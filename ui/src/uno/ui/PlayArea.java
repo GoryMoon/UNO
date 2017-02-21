@@ -18,22 +18,28 @@ public class PlayArea implements IScreen {
         frame.setLayout(new BorderLayout());
         Container contentPane = frame.getContentPane();
         contentPane.setLayout(new BorderLayout(6, 6));
+        frame.setPreferredSize(new Dimension(800, 500));
 
         JLabel background = new JLabel(new ImageIcon("resources/backgrounds/background3.jpg"));
         background.setLayout(new BorderLayout());
         contentPane.add(background);
 
         panel1  = new JPanel ();
-        background.add(panel1, BorderLayout.SOUTH);
-        int amountofcards = 2;
-        panel1.setLayout(new GridLayout(1, amountofcards));
+       background.add(panel1, BorderLayout.SOUTH);
+        panel1.setLayout(new FlowLayout());
 
-
-        panel1.setPreferredSize(new Dimension(amountofcards*10, 150));
-
+        JButton pause =  new JButton("pause");
+        background.add(pause, BorderLayout.NORTH);
+        pause.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SettingsOverlay paus = new SettingsOverlay();
+                main.setScreen(paus);
+            }
+        });
 
         drawCard = new JButton("draw card");
-        background.add(drawCard);
+        background.add(drawCard, BorderLayout.CENTER);
         drawCard.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
