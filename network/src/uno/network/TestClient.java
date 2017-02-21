@@ -3,7 +3,7 @@ package uno.network;
 import uno.network.api.IClientMessageListener;
 import uno.network.api.MessageType;
 import uno.network.api.Packet;
-import uno.network.client.GameClient;
+import uno.network.client.NetworkClient;
 
 import java.util.Scanner;
 
@@ -12,7 +12,7 @@ public class TestClient implements IClientMessageListener {
     private Scanner scanner;
 
     public TestClient(String host, String port) {
-        GameClient client = new GameClient(this, host, Integer.parseInt(port));
+        NetworkClient client = new NetworkClient(this, host, Integer.parseInt(port));
         scanner = new Scanner(System.in);
         String in;
         loop: while (true) {

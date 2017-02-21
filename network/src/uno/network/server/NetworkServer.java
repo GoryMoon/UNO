@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class GameServer implements Runnable {
+public class NetworkServer implements Runnable {
 
     private IServerMessageListener listener;
     private int port;
@@ -26,7 +26,7 @@ public class GameServer implements Runnable {
     private ServerSocket serverSocket;
     private Socket socket = null;
 
-    public GameServer(IServerMessageListener listener, int port, int maxPlayers) {
+    public NetworkServer(IServerMessageListener listener, int port, int maxPlayers) {
         this.listener = listener;
         this.port = port;
         this.maxPlayers = maxPlayers;
@@ -97,6 +97,15 @@ public class GameServer implements Runnable {
                 running = false;
             }
             if (playerThreads.size() < maxPlayers) {
+                if (!listener.onPrePlayerConnect(socket)) {
+                    try {
+                        socket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    socket = null;
+                    continue;
+                }
                 UUID uuid = UUID.randomUUID();
                 Player player = new Player(socket.getInetAddress(), uuid);
                 PlayerThread thread = new PlayerThread(this, socket, player);
