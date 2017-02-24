@@ -11,6 +11,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
+/**
+ * The thread responsible for communications between a client and the server
+ */
 public class PlayerThread extends Thread {
 
     private NetworkServer server;
@@ -20,6 +23,12 @@ public class PlayerThread extends Thread {
     private ObjectInputStream in;
     private boolean running = true;
 
+    /**
+     * Setups the connection streams for the socket that is already setup an connected
+     * @param networkServer The network server object that this is connected to
+     * @param socket The socket that was created when the client connected
+     * @param player The player object that is associated to this thread
+     */
     public PlayerThread(NetworkServer networkServer, Socket socket, Player player) {
         this.server = networkServer;
         this.socket = socket;
@@ -33,6 +42,10 @@ public class PlayerThread extends Thread {
         }
     }
 
+    /**
+     * The threads' run implementation<br/>
+     * Handles the messages received from the client and any disconnects
+     */
     @Override
     public void run() {
         Object o = null;
@@ -66,11 +79,17 @@ public class PlayerThread extends Thread {
             }
     }
 
-    public void disconnectPlayer() {
+    /**
+     * Internal relay for disconnecting an individual client
+     */
+    void disconnectPlayer() {
         sendMessage(new Packet(MessageType.SERVER_CLOSED, "Server closed"));
         closeConnection();
     }
 
+    /**
+     * Closes the connection with the client and stops the listening of messages
+     */
     private void closeConnection() {
         running = false;
         try {
@@ -83,6 +102,10 @@ public class PlayerThread extends Thread {
         }
     }
 
+    /**
+     * Sends the packet to the client associated with this thread
+     * @param packet The packet to be sent
+     */
     public void sendMessage(Packet packet) {
         if (socket.isConnected() && out != null) {
             try {
