@@ -18,7 +18,7 @@ public class PlayArea implements IScreen {
         frame.setLayout(new BorderLayout());
         Container contentPane = frame.getContentPane();
         contentPane.setLayout(new BorderLayout(6, 6));
-        frame.setPreferredSize(new Dimension(800, 500));
+        frame.setPreferredSize(new Dimension(1000, 700));
 
         JLabel background = new JLabel(new ImageIcon("resources/backgrounds/background3.jpg"));
         background.setLayout(new BorderLayout());
@@ -26,10 +26,14 @@ public class PlayArea implements IScreen {
 
         panel1  = new JPanel ();
        background.add(panel1, BorderLayout.SOUTH);
-        panel1.setLayout(new FlowLayout());
+        //panel1.setLayout(new FlowLayout());
+        panel1.setLayout(new GridLayout(2, 8, 2, 2));
 
-        JButton pause =  new JButton("pause");
-        background.add(pause, BorderLayout.NORTH);
+        JButton pause =  new JButton(new ImageIcon ("resources/setting.png") );
+        pause.setOpaque(false);
+        pause.setContentAreaFilled(false);
+        pause.setBorderPainted(false);
+        background.add(pause, BorderLayout.EAST);
         pause.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -38,8 +42,12 @@ public class PlayArea implements IScreen {
             }
         });
 
-        drawCard = new JButton("draw card");
-        background.add(drawCard, BorderLayout.CENTER);
+        drawCard = new JButton(new ImageIcon("resources/unobak.png"));
+        drawCard.setOpaque(false);
+        drawCard.setContentAreaFilled(false);
+        drawCard.setBorderPainted(false);
+
+        background.add(drawCard, BorderLayout.WEST);
         drawCard.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
