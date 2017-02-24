@@ -1,6 +1,10 @@
 package uno.logic;
 
-
+/**
+ * 
+ * @author nakhle
+ * @version
+ */
 
 public class Card {
 	Color color;

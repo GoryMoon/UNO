@@ -1,7 +1,11 @@
 package uno.logic;
 import java.util.*;
 
-
+/**
+ * 
+ * @author nakhle
+ * @version
+ */
 public class Deck {
 	
 	private ArrayList<Card> cards;
