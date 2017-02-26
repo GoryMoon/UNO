@@ -22,8 +22,12 @@ public class SettingsOverlay implements IScreen {
 
     @Override
     public void show() {
+
         frame = new JFrame("Pause Game");
         frame.setLayout(new FlowLayout());
+      //  frame.setGlassPane();
+       // frame.setUndecorated(true);
+     //   frame.setAlwaysOnTop(true);
 
         JLabel pauseLabel = new JLabel(new ImageIcon("resources/backgrounds/unoPause.jpg"));
         pauseLabel.setLayout(new FlowLayout());
