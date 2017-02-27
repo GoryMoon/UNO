@@ -109,7 +109,17 @@ public class GameCoreTest {
 		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.GREEN, Type.NUMBER, 2));
 		
 	}
-	
+	@Test
+	public void endTurnTest() {
+		gameCore = new GameCore(null);
+		gameCore.setupGame(4, uuids);
+		gameCore.endTurn();
+		assertEquals(gameCore.getCurrentPlayerIndex(), 1);
+		gameCore.skipEffect();
+		gameCore.endTurn();
+		assertEquals(gameCore.getCurrentPlayerIndex(), 3);
+
+	}
 	
 	
 

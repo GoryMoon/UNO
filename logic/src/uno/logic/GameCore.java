@@ -29,6 +29,7 @@ public class GameCore {
 		clockwise = true;
 		waitingForInput = false;
 		this.gameServer = gameServer;
+		//gameServer.getInteractions().requestInputFromPlayer(uuid, "Wild");
 	}
 	
 	/** 
@@ -38,8 +39,8 @@ public class GameCore {
 	 */
 	public void setupGame(int playerCount, ArrayList<UUID> uuids) {
 		deck.setupDeck();
-		for(int i = 1; i <= playerCount; i++) {
-			Player player = new Player(("Player "+i),deck, this, uuids.get(i));
+		for(int i = 0; i <= playerCount; i++) {
+			Player player = new Player(("Player "+i+1),deck, this, uuids.get(i));
 			player.setup();
 			players.add(player);
 		}
@@ -101,7 +102,7 @@ public class GameCore {
 			}
 			
 			if(!waitingForInput) {
-			//endTurn();
+			endTurn();
 			}
 		}
 		else{
@@ -122,6 +123,7 @@ public class GameCore {
 		}
 		skipEffect();
 	}
+	
 	
 	
 	/**
@@ -148,13 +150,16 @@ public class GameCore {
 	 * @param color The new color to be assigned
 	 */
 	@SuppressWarnings("incomplete-switch")
-	public void wild(Card card, Color color) {
+	public void wild(Color color) {
+		Card card = deck.getPlayedCards().get(0);
+		waitingForInput = false;
 		switch(color){
 			case RED: card.color = Color.RED; break;
 			case BLUE: card.color = Color.BLUE; break;
 			case YELLOW: card.color = Color.YELLOW; break;
 			case GREEN: card.color = Color.GREEN; break;
 		}
+		endTurn();
 	}
 	
 	/**
@@ -200,5 +205,17 @@ public class GameCore {
 			currentPlayerIndex = getNextPlayer();	
 		}
 		currentPlayerIndex = getNextPlayer();
+	}
+	
+	public int getCurrentPlayerIndex() {
+		return currentPlayerIndex;
+	}
+	
+	public boolean getWaitingForInput() {
+		return waitingForInput;
+	}
+	
+	public Deck getDeck() {
+		return deck;
 	}
 }

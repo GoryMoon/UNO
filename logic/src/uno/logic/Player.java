@@ -41,8 +41,9 @@ public class Player {
 			gameCore.executeCard(card);
 		}
 		
-		cards.add(card);
-		
+		else {
+			cards.add(card);
+		}
 		gameCore.endTurn();
 	}
 	
