@@ -2,6 +2,10 @@ package uno.network.api;
 
 import java.io.Serializable;
 
+/**
+ * The different types of messages that are sent<br/>
+ * Most of them are only used internally and never seen anywhere else
+ */
 public enum MessageType implements Serializable {
     PLAYER_JOINED,
     PLAYER_LEFT,
@@ -11,5 +15,7 @@ public enum MessageType implements Serializable {
     MESSAGE,
     SERVER_CLOSED,
     ERROR_FULL,
-    ERROR_CLOSED, ERROR_RUNNING, ERROR_REACH
+    ERROR_CLOSED,
+    ERROR_RUNNING,
+    ERROR_REACH
 }

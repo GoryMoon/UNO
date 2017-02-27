@@ -36,6 +36,7 @@ public class GameFinished implements IScreen {
         JLabel gameLabel = new JLabel(new ImageIcon("finished.jpg"));
         gameLabel.setLayout(new FlowLayout());
         frame.add(gameLabel);
+        frame.setPreferredSize(new Dimension(800, 500));
 
         backButton = new JButton("Back to menu");
         gameLabel.add(backButton);

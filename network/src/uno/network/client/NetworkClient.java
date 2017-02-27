@@ -13,6 +13,11 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Random;
 
+/**
+ * The network handler for the client side<br/>
+ * Establishes the connection the server and handles the messages received from the server<br/>
+ * Uses a listener for the events that happens
+ */
 public class NetworkClient implements Runnable {
 
     private String hostname;
@@ -26,16 +31,28 @@ public class NetworkClient implements Runnable {
     private boolean stopped;
     private Player player;
 
+    /**
+     * Setups the network client
+     * @param listener The listener that should get the events
+     * @param hostname The hostname of the server location
+     * @param port The port to connect to on the server
+     */
     public NetworkClient(IClientMessageListener listener, String hostname, int port) {
         this.listener = listener;
         this.hostname = hostname;
         this.port = port;
     }
 
+    /**
+     * @return The info that the server has about the client
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Starts the attempt to connect to the server
+     */
     public void connect() {
         running = true;
         stopped = false;
@@ -44,12 +61,18 @@ public class NetworkClient implements Runnable {
         networkThread.start();
     }
 
+    /**
+     * Disconnects from the server
+     */
     public void disconnect() {
         sendToServer(new Packet(MessageType.DISCONNECT, ""));
         closeConnection();
         stopped = true;
     }
 
+    /**
+     * Closes the connection and stops the listening for messages
+     */
     private void closeConnection() {
         running = false;
         try {
@@ -67,6 +90,10 @@ public class NetworkClient implements Runnable {
         }
     }
 
+    /**
+     * Sends a packet to the sever
+     * @param packet The packet to be sent
+     */
     public void sendToServer(Packet packet) {
         try {
             if (out != null)
@@ -78,6 +105,10 @@ public class NetworkClient implements Runnable {
         }
     }
 
+    /**
+     * The threads' run implementation<br/>
+     * Tries to connect to the server and handles the messages received from it
+     */
     @Override
     public void run() {
         if (!setupConnection()) {
@@ -104,7 +135,7 @@ public class NetworkClient implements Runnable {
 
             if (o instanceof Packet) {
                 Packet p = (Packet) o;
-                if (p.type == MessageType.ERROR_FULL) {
+                if (p.type == MessageType.ERROR_FULL || p.type == MessageType.ERROR_RUNNING) {
                     listener.onError(p.type, String.valueOf(p.data));
                     stopped = true;
                 } else if (p.type == MessageType.CONNECTED) {
@@ -121,6 +152,10 @@ public class NetworkClient implements Runnable {
         }
     }
 
+    /**
+     * Setups the socket and streams for connection
+     * @return If the setup was successful or not
+     */
     private boolean setupConnection() {
         try {
             socket = new Socket(hostname, port);

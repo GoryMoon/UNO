@@ -20,6 +20,7 @@ public class GameLobby implements IScreen {
         frame.setLayout(new BorderLayout());
         Container contentPane = frame.getContentPane();
         contentPane.setLayout(new BorderLayout(6, 6));
+        frame.setPreferredSize(new Dimension(800, 500));
 
         JLabel background = new JLabel(new ImageIcon("resources/backgrounds/backgroundGL.png"));
         background.setLayout(new FlowLayout());

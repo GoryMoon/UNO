@@ -11,40 +11,32 @@ import javax.swing.border.*;
 
 public class SettingsOverlay implements IScreen {
     private Main main;
-    JFrame frame;
-    JButton resumeButton;
-    JButton settingButton;
-    JButton quitButton;
+    private JFrame frame;
+    private JButton resumeButton;
+    private JButton settingButton;
+    private JButton quitButton;
 
     public SettingsOverlay() {
 
     }
+
     @Override
     public void show() {
-        makeFrame();
-    }
-    @Override
-    public void hide() {
-        this.frame.setVisible(false);
-    }
-
-
-    public void makeFrame() {
-
         frame = new JFrame("Pause Game");
         frame.setLayout(new FlowLayout());
 
-        JLabel pauseLabel = new JLabel(new ImageIcon("unoPause.jpg"));
+        JLabel pauseLabel = new JLabel(new ImageIcon("resources/backgrounds/unoPause.jpg"));
         pauseLabel.setLayout(new FlowLayout());
         frame.add(pauseLabel);
 
         resumeButton = new JButton("Resume game");
-       // resumeButton.setLayout(new FlowLayout());
+        // resumeButton.setLayout(new FlowLayout());
         pauseLabel.add(resumeButton);
         resumeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e ){
-                //Go to playArea window
+                PlayArea area = new PlayArea();
+                main.setScreen(area);
             }
         });
 
@@ -74,6 +66,10 @@ public class SettingsOverlay implements IScreen {
         });
         frame.pack();
         frame.setVisible(true);
+    }
+    @Override
+    public void hide() {
+        this.frame.setVisible(false);
     }
     @Override
     public void setMain(Main main) {
