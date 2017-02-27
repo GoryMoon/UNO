@@ -41,7 +41,7 @@ public class GameCore {
 	public void setupGame(int playerCount, ArrayList<UUID> uuids) {
 		deck.setupDeck();
 		for(int i = 0; i < playerCount; i++) {
-			Player player = new Player(("Player "+i+1),deck, this, uuids.get(i));
+			Player player = new Player(("Player "+(i+1)),deck, this, uuids.get(i));
 			player.setup();
 			players.add(player);
 		}
