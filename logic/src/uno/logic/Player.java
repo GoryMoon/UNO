@@ -32,6 +32,7 @@ public class Player {
 	
 	public void drawCard()  {
 		cards.add(deck.draw());
+		uno = false;
 	}
 	
 	public void endDraw() {
@@ -44,6 +45,7 @@ public class Player {
 		else {
 			cards.add(card);
 		}
+		uno = false;
 		gameCore.endTurn();
 	}
 	

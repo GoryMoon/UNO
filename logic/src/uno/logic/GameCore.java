@@ -1,6 +1,7 @@
 package uno.logic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 import uno.server.core.GameServer;
@@ -17,7 +18,7 @@ public class GameCore {
 	Deck deck;
 	private ArrayList<Player> players;
 	private int currentPlayerIndex;
-	private ArrayList<Integer> skippedPlayers;
+	private HashMap<Integer, UUID> skippedPlayers;
 	private boolean clockwise;
 	private boolean waitingForInput;
     private GameServer gameServer;
@@ -25,11 +26,11 @@ public class GameCore {
 	public GameCore(GameServer gameServer) {
 		deck = new Deck();
 		players = new ArrayList<Player>();
-		skippedPlayers = new ArrayList<Integer>();
+		skippedPlayers = new HashMap<Integer, UUID>();
 		clockwise = true;
 		waitingForInput = false;
 		this.gameServer = gameServer;
-		//gameServer.getInteractions().requestInputFromPlayer(uuid, "Wild");
+		
 	}
 	
 	/** 
@@ -39,7 +40,7 @@ public class GameCore {
 	 */
 	public void setupGame(int playerCount, ArrayList<UUID> uuids) {
 		deck.setupDeck();
-		for(int i = 0; i <= playerCount; i++) {
+		for(int i = 0; i < playerCount; i++) {
 			Player player = new Player(("Player "+i+1),deck, this, uuids.get(i));
 			player.setup();
 			players.add(player);
@@ -47,9 +48,9 @@ public class GameCore {
 		//deck.shuffle();
 		currentPlayerIndex = 0;
 		firstDraw();
-		//if(currentPlayerIndex == 0 || !clockwise) {
-		//	endTurn();
-		//}
+		if(currentPlayerIndex == 0 || !clockwise) {
+			endTurn();
+		}
 	}
 	
 	
@@ -64,7 +65,7 @@ public class GameCore {
 			case NUMBER: break;
 			case REVERSE: currentPlayerIndex = 1; reverseEffect(); break;
 			case SKIP: skipEffect(); break;
-			case WILD: endTurn(); break;
+			case WILD: endTurn(); waitingForInput = true; gameServer.getInteractions().requestInputFromPlayer(players.get(getNextPlayer()).getUuid(), "wild"); break;
 			case WILD_DRAW: deck.mergeDecks(); firstDraw(); break;
 		
 		}
@@ -80,13 +81,14 @@ public class GameCore {
 		Card temp = deck.getPlayedCards().get(0);
 		if((card.color == temp.color) ||  ((card.type == temp.type) && card.number == temp.number) || (card.type == Type.WILD) || (card.type == Type.WILD_DRAW)) {
 			deck.getPlayedCards().add(0, card);
+			players.get(currentPlayerIndex).getCards().remove(card);
 			switch(card.type){
 				case DRAW: drawEffect(2); break;
 				case NUMBER: break;
 				case REVERSE: reverseEffect();
 				case SKIP: skipEffect(); break;
-				case WILD: waitingForInput = true;  break; 
-				case WILD_DRAW: waitingForInput = true; drawEffect(4); break;
+				case WILD: waitingForInput = true; gameServer.getInteractions().requestInputFromPlayer(players.get(currentPlayerIndex).getUuid(), "wild");  break; 
+				case WILD_DRAW: waitingForInput = true; gameServer.getInteractions().requestInputFromPlayer(players.get(currentPlayerIndex).getUuid(), "wild"); drawEffect(4); break;
 				
 			
 			}
@@ -102,7 +104,7 @@ public class GameCore {
 			}
 			
 			if(!waitingForInput) {
-			endTurn();
+				endTurn();
 			}
 		}
 		else{
@@ -141,7 +143,7 @@ public class GameCore {
 	 * Adds the next player in the skipped list
 	 */
 	public void skipEffect() {
-		skippedPlayers.add(getNextPlayer());
+		skippedPlayers.put(getNextPlayer(), players.get(getNextPlayer()).getUuid());
 	}
 	
 	/**
@@ -168,14 +170,14 @@ public class GameCore {
 	 */
 	public int getNextPlayer() {
 		if(clockwise) {
-			if(currentPlayerIndex+1 > players.size()) {
+			if(currentPlayerIndex+1 >= players.size()) {
 				return 0;
 			}
 			return currentPlayerIndex+1;
 		}
 		else {
 			if(currentPlayerIndex-1 < 0){
-				return players.size();
+				return players.size()-1;
 			}
 			return currentPlayerIndex-1;
 		}
@@ -188,7 +190,7 @@ public class GameCore {
 	public boolean getTurnOrder() {
 		return clockwise;
 	}
-	public ArrayList<Integer> getSkippedPlayers() {
+	public HashMap<Integer, UUID> getSkippedPlayers() {
 		return skippedPlayers;
 	}
 	
@@ -200,7 +202,7 @@ public class GameCore {
 	}
 	
 	public void endTurn() {
-		while(skippedPlayers.contains(getNextPlayer())) {
+		while(skippedPlayers.containsKey(getNextPlayer())) {
 			skippedPlayers.remove(getNextPlayer());
 			currentPlayerIndex = getNextPlayer();	
 		}

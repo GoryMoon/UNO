@@ -49,8 +49,8 @@ public class GameCoreTest {
 		gameCore.setupGame(4, uuids);
 		gameCore.deck.getCards().add(0, new Card(Color.RED, Type.DRAW, 1));
 		gameCore.firstDraw();
-		assertEquals(gameCore.getPlayers().get(1).getCards().size(), 9);
-		assertEquals(gameCore.getSkippedPlayers().get(0).intValue(), 1);
+		assertEquals(gameCore.getPlayers().get(gameCore.getNextPlayer()).getCards().size(), 9);
+		assertTrue(gameCore.getSkippedPlayers().containsKey(gameCore.getNextPlayer()));
 		gameCore.deck.getCards().add(0, new Card(Color.RED, Type.REVERSE, 1));
 		gameCore.firstDraw();
 		assertTrue(!gameCore.getTurnOrder());
@@ -65,8 +65,8 @@ public class GameCoreTest {
 		gameCore = new GameCore(null);
 		gameCore.setupGame(4, uuids);
 		gameCore.drawEffect(2);
-		assertEquals(gameCore.getPlayers().get(1).getCards().size(), 9);
-		assertEquals(gameCore.getSkippedPlayers().get(0).intValue(), 1);
+		assertEquals(gameCore.getPlayers().get(gameCore.getNextPlayer()).getCards().size(), 9);
+		assertTrue(gameCore.getSkippedPlayers().containsKey(gameCore.getNextPlayer()));
 	}
 	
 	@Test
@@ -91,8 +91,8 @@ public class GameCoreTest {
 		gameCore.setupGame(4, uuids);
 		gameCore.executeCard(new Card(Color.RED, Type.DRAW, -1));
 		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.RED, Type.DRAW, -1));
-		assertEquals(gameCore.getPlayers().get(1).getCards().size(), 9);
-		assertEquals(gameCore.getSkippedPlayers().get(0).intValue(), 1);
+		assertEquals(gameCore.getPlayers().get(gameCore.getCurrentPlayerIndex()-1).getCards().size(), 9);
+		assertEquals(gameCore.getCurrentPlayerIndex(), 3);
 		gameCore.executeCard(new Card(Color.BLUE, Type.REVERSE, -1));
 		assertEquals(gameCore.deck.getPlayedCards().get(0), new Card(Color.RED, Type.DRAW, -1));
 		gameCore.executeCard(new Card(Color.RED, Type.REVERSE, -1));
@@ -114,10 +114,10 @@ public class GameCoreTest {
 		gameCore = new GameCore(null);
 		gameCore.setupGame(4, uuids);
 		gameCore.endTurn();
-		assertEquals(gameCore.getCurrentPlayerIndex(), 1);
+		assertEquals(gameCore.getCurrentPlayerIndex(), 2);
 		gameCore.skipEffect();
 		gameCore.endTurn();
-		assertEquals(gameCore.getCurrentPlayerIndex(), 3);
+		assertEquals(gameCore.getCurrentPlayerIndex(), 0);
 
 	}
 	
