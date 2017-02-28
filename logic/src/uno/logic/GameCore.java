@@ -105,6 +105,11 @@ public class GameCore {
 				players.get(currentPlayerIndex).drawCard();
 			}
 			
+			players.get(currentPlayerIndex).setUno(false);
+			
+			if(!winCondition) {
+				endTurn();
+			}
 			if(!waitingForInput) {
 				endTurn();
 			}
