@@ -16,10 +16,18 @@ public class Deck {
 		playedCards = new ArrayList<Card>();
 	}
 	
+	
+	/**
+	 * 
+	 * @return cards Returns the cards that are in the decks
+	 */
 	public ArrayList<Card> getCards() {
 		return cards;
 	}
-	
+	/**
+	 * 
+	 * @return playedCards Returns the pile of cards that have been played in the duration of the game
+	 */
 	public ArrayList<Card> getPlayedCards() {
 		return playedCards;
 	}
@@ -72,6 +80,7 @@ public class Deck {
 	 * 
 	 * Returns the first card in our deck collection and then removes it
 	 * If the last card is drawn it takes the currently played cards and shuffles them into a new deck
+	 * @return temp The drawn card
 	 */
 	public Card draw() {
 		Card temp = cards.get(0);

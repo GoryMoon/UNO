@@ -25,6 +25,7 @@ public class GameCore {
     private GameServer gameServer;
     private boolean winCondition;
 	
+    
 	public GameCore(GameServer gameServer) {
 		deck = new Deck();
 		players = new ArrayList<Player>();
@@ -234,30 +235,44 @@ public class GameCore {
 		return currentPlayerIndex;
 	}
 	
+	/**
+	 * 
+	 * @return waitingForInput	A flag that the server checks for so it knows that it shouldn't continue until it gets input from the player
+	 */
 	public boolean getWaitingForInput() {
 		return waitingForInput;
 	}
-	
+	/**
+	 * 
+	 * @return deck	Returns the deck the current game is using
+	 */
 	public Deck getDeck() {
 		return deck;
 	}
-	
+	/**
+	 * 	If a player has zero card the games sets a win condition flag for the server to look for
+	 */
 	public void setWinCondition() {
 		if(players.get(currentPlayerIndex).getCards().size() == 0) {
 			winCondition = true;
 		}
 	}
 	
+	/**
+	 * 
+	 * @return Returns the win condition flag 
+	 */
 	public boolean getWinCondition() {
 		return winCondition;
 	}
 	
 	/**
-	 * 
-	 * @return 
+	 * Sorts all the players by the number of cards they have when the game ends
+	 * @return winList	Returns the sorted list of players
 	 */
 	public ArrayList<Player> getWinList() {
 		ArrayList<Player> winList = new ArrayList<>();
+		winList.addAll(players);
 		winList.sort(new Comparator<Player>(){
 			@Override
 			public int compare(Player p1, Player p2) {
