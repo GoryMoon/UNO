@@ -1,6 +1,7 @@
 package uno.logic;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -232,5 +233,16 @@ public class GameCore {
 	
 	public boolean getWinCondition() {
 		return winCondition;
+	}
+	
+	public ArrayList<Player> getWinList() {
+		ArrayList<Player> winList = new ArrayList<>();
+		winList.sort(new Comparator<Player>(){
+			@Override
+			public int compare(Player p1, Player p2) {
+				return p1.getCards().size() < p2.getCards().size() ? -1: p1.getCards().size() > p2.getCards().size() ? 1: 0;
+			}
+		});
+		return winList;
 	}
 }
