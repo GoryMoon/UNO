@@ -40,7 +40,7 @@ public class Deck {
 			cards.add(new Card(Color.GREEN, Type.NUMBER, i));
 			cards.add(new Card(Color.BLUE, Type.NUMBER, i));
 		}
-		for(int i = 0; i <= 4; i++) {
+		for(int i = 0; i < 4; i++) {
 			cards.add(new Card(Color.values()[i], Type.DRAW, -1));
 			cards.add(new Card(Color.values()[i], Type.DRAW, -1));
 			cards.add(new Card(Color.values()[i], Type.SKIP, -1));
