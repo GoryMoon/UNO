@@ -107,12 +107,13 @@ public class GameCore {
 			
 			players.get(currentPlayerIndex).setUno(false);
 			
-			if(!winCondition) {
+			setWinCondition();
+			
+			
+			if(!waitingForInput && !winCondition) {
 				endTurn();
 			}
-			if(!waitingForInput) {
-				endTurn();
-			}
+
 		}
 		else{
 			return;

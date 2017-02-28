@@ -117,6 +117,7 @@ public class GameCoreTest {
 		assertEquals(gameCore.getCurrentPlayerIndex(), 2);
 		gameCore.skipEffect();
 		gameCore.endTurn();
+		assertTrue(gameCore.getSkippedPlayers().containsKey(3));
 		assertEquals(gameCore.getCurrentPlayerIndex(), 0);
 
 	}

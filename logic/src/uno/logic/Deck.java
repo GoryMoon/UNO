@@ -73,7 +73,6 @@ public class Deck {
 	 * Returns the first card in our deck collection and then removes it
 	 * If the last card is drawn it takes the currently played cards and shuffles them into a new deck
 	 */
-	
 	public Card draw() {
 		Card temp = cards.get(0);
 		cards.remove(0);
@@ -82,10 +81,11 @@ public class Deck {
 		}
 		return temp;
 	}
-	/*
+	
+	
+	/**
 	 *  Takes the playedCards deck and shuffles it into the cards deck 
 	 */
-	
 	public void mergeDecks() {
 		cards.addAll(playedCards);
 		playedCards.clear();
