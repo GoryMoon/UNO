@@ -126,7 +126,7 @@ public class GameCore {
 	/**
 	 * 
 	 * Forces the next player to draw 2 or 4 cards depending on which number you send and also adds the next player in the skipped list
-	 * count The number of cards to be drawn
+	 * @param count The number of cards to be drawn
 	 */
 	public void drawEffect(int count) {
 		for(int i = 0; i < count; i++){
@@ -176,6 +176,7 @@ public class GameCore {
 	/**
 	 * 
 	 * Check who is the next player depending on if the current turn order is clockwise or not and returns the index number for who's next
+	 * @return currentPlayerIndex Index which keeps track about who is the current player
 	 */
 	public int getNextPlayer() {
 		if(clockwise) {
@@ -192,19 +193,33 @@ public class GameCore {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return players Returns all the players playing the game
+	 */
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
-	
+	/**
+	 * 
+	 * @return clockwise Returns the current turn order, clockwise or counter-clockwise
+	 */
 	public boolean getTurnOrder() {
 		return clockwise;
 	}
+	
+	/**
+	 * 
+	 * @return skippedPlayers Returns an index about which players are skipped by skip/draw effects
+	 */
 	public HashMap<Integer, UUID> getSkippedPlayers() {
 		return skippedPlayers;
 	}
 	
 	
-	
+	/**
+	 * Changes the current player to the the next one who is not in the skippedPlayer index
+	 */
 	public void endTurn() {
 		while(skippedPlayers.containsKey(getNextPlayer())) {
 			skippedPlayers.remove(getNextPlayer());
@@ -212,7 +227,10 @@ public class GameCore {
 		}
 		currentPlayerIndex = getNextPlayer();
 	}
-	
+	/**
+	 * 
+	 * @return currentPlayerIndex Returns the index which keeps track on who's turn it is
+	 */
 	public int getCurrentPlayerIndex() {
 		return currentPlayerIndex;
 	}
@@ -235,6 +253,10 @@ public class GameCore {
 		return winCondition;
 	}
 	
+	/**
+	 * 
+	 * @return 
+	 */
 	public ArrayList<Player> getWinList() {
 		ArrayList<Player> winList = new ArrayList<>();
 		winList.sort(new Comparator<Player>(){

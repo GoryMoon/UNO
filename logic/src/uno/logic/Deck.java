@@ -52,7 +52,7 @@ public class Deck {
 			cards.add(new Card(Color.BLACK, Type.WILD, -1));
 			cards.add(new Card(Color.BLACK, Type.WILD_DRAW, -1));
 		}
-		//shuffle();
+		shuffle();
 	}
 	
 	/**
