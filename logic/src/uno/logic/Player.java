@@ -44,9 +44,10 @@ public class Player {
 		
 		else {
 			cards.add(card);
+			gameCore.endTurn();
 		}
 		uno = false;
-		gameCore.endTurn();
+		
 	}
 	
 	public ArrayList<Card> getCards() {

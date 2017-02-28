@@ -22,6 +22,7 @@ public class GameCore {
 	private boolean clockwise;
 	private boolean waitingForInput;
     private GameServer gameServer;
+    private boolean winCondition;
 	
 	public GameCore(GameServer gameServer) {
 		deck = new Deck();
@@ -30,6 +31,7 @@ public class GameCore {
 		clockwise = true;
 		waitingForInput = false;
 		this.gameServer = gameServer;
+		winCondition = false;
 		
 	}
 	
@@ -45,7 +47,7 @@ public class GameCore {
 			player.setup();
 			players.add(player);
 		}
-		//deck.shuffle();
+		deck.shuffle();
 		currentPlayerIndex = 0;
 		firstDraw();
 		if(currentPlayerIndex == 0 || !clockwise) {
@@ -194,12 +196,7 @@ public class GameCore {
 		return skippedPlayers;
 	}
 	
-	public void runGame() {
-		boolean turn = true;
-		while(turn) {
-			
-		}
-	}
+	
 	
 	public void endTurn() {
 		while(skippedPlayers.containsKey(getNextPlayer())) {
@@ -219,5 +216,15 @@ public class GameCore {
 	
 	public Deck getDeck() {
 		return deck;
+	}
+	
+	public void setWinCondition() {
+		if(players.get(currentPlayerIndex).getCards().size() == 0) {
+			winCondition = true;
+		}
+	}
+	
+	public boolean getWinCondition() {
+		return winCondition;
 	}
 }
