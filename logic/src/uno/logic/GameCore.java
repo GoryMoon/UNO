@@ -48,7 +48,6 @@ public class GameCore {
 			player.setup();
 			players.add(player);
 		}
-		deck.shuffle();
 		currentPlayerIndex = 0;
 		firstDraw();
 		if(currentPlayerIndex == 0 || !clockwise) {
