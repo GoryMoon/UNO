@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class SettingsOverlay implements IScreen {
+public class SettingsOverlay {
     private Main main;
     private JFrame frame;
     private JButton resumeButton;
@@ -19,14 +19,14 @@ public class SettingsOverlay implements IScreen {
 
     }
 
-    @Override
     public void show() {
 
         frame = new JFrame("Pause Game");
         frame.setLayout(new FlowLayout());
-      //  frame.setGlassPane();
-       // frame.setUndecorated(true);
-     //   frame.setAlwaysOnTop(true);
+        frame.setUndecorated(true);
+        frame.setAlwaysOnTop(true);
+        frame.setLocationRelativeTo(null);
+
 
         JLabel pauseLabel = new JLabel(new ImageIcon("resources/backgrounds/unoPause.jpg"));
         pauseLabel.setLayout(new FlowLayout());
@@ -38,8 +38,7 @@ public class SettingsOverlay implements IScreen {
         resumeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e ){
-                PlayArea area = new PlayArea();
-                main.setScreen(area);
+                close();
             }
         });
 
@@ -53,6 +52,7 @@ public class SettingsOverlay implements IScreen {
                 //System.out.println("nej");
                 MainMenu menu = new MainMenu();
                 main.setScreen(menu);
+                close();
             }
         });
 
@@ -70,17 +70,13 @@ public class SettingsOverlay implements IScreen {
         frame.pack();
         frame.setVisible(true);
     }
-    @Override
-    public void hide() {
-        this.frame.setVisible(false);
-    }
-    @Override
+
     public void setMain(Main main) {
         this.main = main;
     }
-    @Override
-    public void back() {
 
+    private void close() {
+        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }
 
-    }
+}
