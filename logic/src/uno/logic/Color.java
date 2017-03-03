@@ -1,8 +1,10 @@
 package uno.logic;
+
 /**
+ * An enum that stores the five different colors a card can be
  * 
- * @author nakhle
- * @version
+ * @author Daniel Rydén & Fressia Moreno
+ * @version 2017-03-03
  */
 public enum Color {
 	RED,

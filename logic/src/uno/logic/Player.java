@@ -2,8 +2,9 @@ package uno.logic;
 import	java.util.*;
 /**
  * 
- * @author nakhle
- * @version
+ * 
+ * @author Daniel Rydén & Fressia Moreno
+ * @version 2017-03-03
  */
 
 public class Player {
@@ -15,6 +16,13 @@ public class Player {
 	private boolean uno;
 	private UUID uuid;
 	
+	/**
+	 * Takes in all info about the new player to be created, gives the player info about the game currently played and also access to deck and gameCore's methods
+	 * @param name The player's name
+	 * @param deck The deck used by the game
+	 * @param gameCore The current game 
+	 * @param uuid The player's unique identifier
+	 */
 	public Player(String name, Deck deck, GameCore gameCore, UUID uuid) {
 		this.name = name;
 		cards = new ArrayList<Card>();
@@ -39,8 +47,8 @@ public class Player {
 	}
 	
 	/**
-	 * The player can choose to draw a card instead of playing one when out of options, 
-	 * if the card is playable it is immediately played and the turn ends in either case
+	 * when out of options the player can choose to draw a card instead, 
+	 * if the card is playable it is immediately played. After either case the turn ends.
 	 */
 	public void endDraw() {
 		Card card = deck.draw();
@@ -57,7 +65,6 @@ public class Player {
 	}
 	
 	/**
-	 * 
 	 * @return cards Returns the cards that are in the player's hand
 	 */
 	public ArrayList<Card> getCards() {
@@ -65,7 +72,6 @@ public class Player {
 	}
 	
 	/**
-	 * 
 	 * @return uno A flag that checks if the player called Uno or not
 	 */
 	public boolean unoStatus() {
@@ -74,23 +80,23 @@ public class Player {
 	
 	/**
 	 * Sets the Uno flag to true or false, true meaning that you've called Uno
-	 * @param status True or false depending on what you want to set the flag too
+	 * @param status True or false depending on what you want to set the flag to
 	 */
 	public void setUno(boolean status) {
 		uno = status;
 	}
 	
 	/**
-	 * 
-	 * @return name Returns the player's name
+	 * Returns the player's name
+	 * @return name The player's name
 	 */
 	public String getName() {
 		return name;
 	}
 	
 	/**
-	 * 
-	 * @return uuid Returns the player's unique identifier
+	 * Returns the player's unique identifier
+	 * @return uuid The player's unique identifier
 	 */
 	public UUID getUuid() {
 		return uuid;

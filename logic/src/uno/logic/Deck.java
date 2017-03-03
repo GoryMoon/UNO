@@ -2,9 +2,14 @@ package uno.logic;
 import java.util.*;
 
 /**
+ * This class keeps track of the deck, the class can create a deck with all the cards as well as create a "played cards pile" where you put all the played cards
+ * <p>
+ * If the deck runs out of cards it shuffles all the played cards into a new deck. 
+ * <p>
+ * In this class is also where you draw cards.
  * 
- * @author nakhle
- * @version
+ * @author Daniel Rydén & Fressia Moreno
+ * @version 2017-03-03
  */
 public class Deck {
 	
@@ -18,14 +23,12 @@ public class Deck {
 	
 	
 	/**
-	 * 
 	 * @return cards Returns the cards that are in the decks
 	 */
 	public ArrayList<Card> getCards() {
 		return cards;
 	}
 	/**
-	 * 
 	 * @return playedCards Returns the pile of cards that have been played in the duration of the game
 	 */
 	public ArrayList<Card> getPlayedCards() {
@@ -33,7 +36,7 @@ public class Deck {
 	}
 	
 	/**
-	 * Adds all the cards we're using to our deck
+	 * Adds all the cards we're using to our deck and shuffles it 
 	 */
 	public void setupDeck() { 
 		for(int i = 0; i <= 9; i++){
@@ -64,8 +67,7 @@ public class Deck {
 	}
 	
 	/**
-	 * 
-	 * Implementations of Fisher-Yates Shuffle algoritm
+	 * Implementations of Fisher-Yates Shuffle algorithm
 	 */
 	public void shuffle() {
 		int length = cards.size();
@@ -77,29 +79,30 @@ public class Deck {
 		}
 	}
 	/**
-	 * 
 	 * Returns the first card in our deck collection and then removes it
+	 * <p>
 	 * If the last card is drawn it takes the currently played cards and shuffles them into a new deck
-	 * @return temp The drawn card
+	 * @return card The drawn card
 	 */
 	public Card draw() {
-		Card temp = cards.get(0);
+		Card card = cards.get(0);
 		cards.remove(0);
 		if(cards.isEmpty()) {
 			mergeDecks();
 		}
-		return temp;
+		return card;
 	}
 	
 	
 	/**
-	 *  Takes the playedCards deck and shuffles it into the cards deck 
+	 *  Takes the playedCards deck and shuffles it into the cards deck, leaving the last played card for other players to play against 
 	 */
 	public void mergeDecks() {
+		Card temp = playedCards.get(0);
+		playedCards.remove(0);
 		cards.addAll(playedCards);
 		playedCards.clear();
+		playedCards.add(0, temp);
 		shuffle();
 	}
-	
-	
 }

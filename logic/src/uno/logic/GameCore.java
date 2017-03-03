@@ -8,14 +8,18 @@ import java.util.UUID;
 import uno.server.core.GameServer;
 
 /**
+ * This class initializes the game by creating a deck, all the players who shall play the game and draws the first card
+ * <p>
+ * When a player chooses a card to play this class makes sure it gets played and also keeps track of all special effects the cards may have
+ * <p>
+ * Also keeps track on whose turn it is and who the next player is depending on the direction of the turn order (clockwise/counterclockwise)
  * 
- * @author nakhle
- * @version
+ * @author Daniel Rydén & Fressia Moreno
+ * @version 2017-03-03
  */
 
 public class GameCore {
 	
-
 	Deck deck;
 	private ArrayList<Player> players;
 	private int currentPlayerIndex;
@@ -25,7 +29,10 @@ public class GameCore {
     private GameServer gameServer;
     private boolean winCondition;
 	
-    
+    /**
+     * Takes in the game server class so it can use some game server methods like requesting the players for input
+     * @param gameServer The class for the game server
+     */
 	public GameCore(GameServer gameServer) {
 		deck = new Deck();
 		players = new ArrayList<Player>();
@@ -34,11 +41,10 @@ public class GameCore {
 		waitingForInput = false;
 		this.gameServer = gameServer;
 		winCondition = false;
-		
 	}
 	
 	/** 
-	 * Creates a deck, the number of players who are playing, shuffles the deck and draws the first card
+	 * Creates a deck, the number of players who are playing and draws the first card
 	 * @param playerCount Number of players
 	 * @param uuids The collection of UUIDs that are to be assigned to the players
 	 */
@@ -58,7 +64,7 @@ public class GameCore {
 	
 	
 	/** 
-	 * When the game starts a card is drawn for the other to play against, the first draw also has a special effect
+	 * When the game starts a card is drawn so the first player can start it's turn, the first draw also may have a special effect
 	 */
 	public void firstDraw() {
 		deck.getPlayedCards().add(0, deck.draw());
@@ -75,7 +81,8 @@ public class GameCore {
 	}
 	
 	/**
-	 * Plays the card that the player have chosen, if it's allowed it gets added to the playedCards collection, else nothing happens
+	 * Plays the card that the player has chosen, if the card is allowed it gets added to the playedCards collection and removed from the player's hand, else nothing happens. 
+	 * <p>
 	 * Also checks if the card has a special effect and plays it
 	 * @param card The card object that is to be played
 	 */
@@ -123,8 +130,7 @@ public class GameCore {
 	}
 	
 	
-	/**
-	 * 
+	/** 
 	 * Forces the next player to draw 2 or 4 cards depending on which number you send and also adds the next player in the skipped list
 	 * @param count The number of cards to be drawn
 	 */
@@ -138,7 +144,7 @@ public class GameCore {
 	
 	
 	/**
-	 * Reverses the turn order
+	 * Reverses the turn order, if there're only two players this acts like a skip card
 	 */
 	public void reverseEffect() {
 		if(players.size() == 2) {
@@ -149,7 +155,7 @@ public class GameCore {
 	
 	
 	/**
-	 * Adds the next player in the skipped list
+	 * Adds the next player in the skipped list, their next turn is skipped
 	 */
 	public void skipEffect() {
 		skippedPlayers.put(getNextPlayer(), players.get(getNextPlayer()).getUuid());
@@ -157,7 +163,6 @@ public class GameCore {
 	
 	/**
 	 * Changes the color of a wild card to a color of the players choice
-	 * @param card The card to be affected
 	 * @param color The new color to be assigned
 	 */
 	@SuppressWarnings("incomplete-switch")
@@ -174,9 +179,8 @@ public class GameCore {
 	}
 	
 	/**
-	 * 
 	 * Check who is the next player depending on if the current turn order is clockwise or not and returns the index number for who's next
-	 * @return currentPlayerIndex Index which keeps track about who is the current player
+	 * @return currentPlayerIndex Index which keeps track of who is the current player
 	 */
 	public int getNextPlayer() {
 		if(clockwise) {
@@ -194,23 +198,20 @@ public class GameCore {
 	}
 	
 	/**
-	 * 
-	 * @return players Returns all the players playing the game
+	 * @return players The players who are playing the game
 	 */
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
 	/**
-	 * 
-	 * @return clockwise Returns the current turn order, clockwise or counter-clockwise
+	 * @return clockwise The current turn order, clockwise or counter-clockwise
 	 */
 	public boolean getTurnOrder() {
 		return clockwise;
 	}
 	
 	/**
-	 * 
-	 * @return skippedPlayers Returns an index about which players are skipped by skip/draw effects
+	 * @return skippedPlayers An index about which players are skipped by skip/draw effects
 	 */
 	public HashMap<Integer, UUID> getSkippedPlayers() {
 		return skippedPlayers;
@@ -218,7 +219,7 @@ public class GameCore {
 	
 	
 	/**
-	 * Changes the current player to the the next one who is not in the skippedPlayer index
+	 * Changes the current player to the the next one in turn who is not in the skippedPlayer index
 	 */
 	public void endTurn() {
 		while(skippedPlayers.containsKey(getNextPlayer())) {
@@ -228,29 +229,26 @@ public class GameCore {
 		currentPlayerIndex = getNextPlayer();
 	}
 	/**
-	 * 
-	 * @return currentPlayerIndex Returns the index which keeps track on who's turn it is
+	 * @return currentPlayerIndex The index which keeps track on who's turn it is
 	 */
 	public int getCurrentPlayerIndex() {
 		return currentPlayerIndex;
 	}
 	
 	/**
-	 * 
-	 * @return waitingForInput	A flag that the server checks for so it knows that it shouldn't continue until it gets input from the player
+	 * @return waitingForInput	A flag that the server checks so it knows that it shouldn't continue until it gets input from the player
 	 */
 	public boolean getWaitingForInput() {
 		return waitingForInput;
 	}
 	/**
-	 * 
 	 * @return deck	Returns the deck the current game is using
 	 */
 	public Deck getDeck() {
 		return deck;
 	}
 	/**
-	 * 	If a player has zero card the games sets a win condition flag for the server to look for
+	 * 	If a player has zero cards the game sets a win condition flag for the server to look for
 	 */
 	public void setWinCondition() {
 		if(players.get(currentPlayerIndex).getCards().size() == 0) {
@@ -259,8 +257,7 @@ public class GameCore {
 	}
 	
 	/**
-	 * 
-	 * @return Returns the win condition flag 
+	 * @return The win condition flag 
 	 */
 	public boolean getWinCondition() {
 		return winCondition;
@@ -268,7 +265,7 @@ public class GameCore {
 	
 	/**
 	 * Sorts all the players by the number of cards they have when the game ends
-	 * @return winList	Returns the sorted list of players
+	 * @return winList	The sorted list of players
 	 */
 	public ArrayList<Player> getWinList() {
 		ArrayList<Player> winList = new ArrayList<>();
