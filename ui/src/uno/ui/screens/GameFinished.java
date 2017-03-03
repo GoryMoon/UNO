@@ -1,14 +1,10 @@
-package uno.ui;
+package uno.ui.screens;
 
-import uno.ui.IScreen;
 import uno.ui.Main;
-import uno.ui.MainMenu;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.*;
 import javax.swing.*;
-import javax.swing.border.*;
 
 
 public class GameFinished implements IScreen {

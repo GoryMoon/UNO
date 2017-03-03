@@ -1,10 +1,15 @@
-package uno.ui;
+package uno.ui.screens;
+
+import javafx.util.Pair;
+import uno.ui.Main;
+import uno.ui.SettingsOverlay;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
+import java.util.UUID;
 
 
 public class PlayArea implements IScreen {
@@ -13,11 +18,15 @@ public class PlayArea implements IScreen {
     private JPanel panel1;
     private JButton drawCard;
     private JButton cardPile;
-   // private JButton stampe = new JButton(new ImageIcon("resources/unobak.png"));
+
+    private ArrayList<Pair<UUID, Pair<String, Boolean>>> players;
+    private ArrayList<Pair<UUID, Integer>> cardAmount;
+    private ArrayList<Card> cards;
+    private boolean currentTurn;
 
     @Override
     public void show() {
-        frame = new JFrame("UNO uno.ui.PlayArea");
+        frame = new JFrame("UNO uno.ui.screens.PlayArea");
         frame.setLayout(new BorderLayout());
         Container contentPane = frame.getContentPane();
         contentPane.setLayout(new BorderLayout(6, 6));
@@ -54,8 +63,9 @@ public class PlayArea implements IScreen {
         drawCard.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JButton card2 = new JButton(new ImageIcon("resources/cards/wildred.png"));
-                panel1.add(card2);
+                //JButton card2 = new JButton(new ImageIcon("resources/cards/wildred.png"));
+                //panel1.add(card2);
+                main.sendMessageToServer("draw-card");
                 frame.pack();  //måste forma om när man har ändrat.
             }
         });
@@ -104,6 +114,18 @@ public class PlayArea implements IScreen {
 
         frame.pack();
         frame.setVisible(true);
+    }
+
+    public void addCards() {
+
+    }
+
+    public void handleMessage(Object o) {
+        if (o instanceof Pair) {
+            if (((Pair) o).getKey().equals("new-round")) {
+
+            }
+        }
     }
 
 

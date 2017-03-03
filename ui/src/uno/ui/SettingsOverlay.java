@@ -1,13 +1,12 @@
 package uno.ui;
 
-import uno.ui.IScreen;
-import uno.ui.Main;
+import uno.ui.screens.IScreen;
+import uno.ui.screens.MainMenu;
+import uno.ui.screens.PlayArea;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.*;
 import javax.swing.*;
-import javax.swing.border.*;
 
 public class SettingsOverlay implements IScreen {
     private Main main;

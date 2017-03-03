@@ -1,41 +1,37 @@
-package uno.ui;
+package uno.ui.screens;
 
-import javax.swing.*;
+import uno.ui.Main;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import javax.swing.*;
 
 /**
- * Created by Kungen on 2017-02-16.
+ * Created by Kungen on 2017-02-14.
  */
-public class GameLobby implements IScreen {
-    private Main main;
+public class ErrorScreen implements IScreen{
     private JFrame frame;
+    private Main main;
 
-    public GameLobby() {}
+    public String error;
+
+    public ErrorScreen() {
+
+    }
 
     @Override
     public void show() {
-        frame = new JFrame("UNO Game Lobby");
+        frame = new JFrame("UNO uno.ui.screens.ErrorScreen");
         frame.setLayout(new BorderLayout());
         Container contentPane = frame.getContentPane();
         contentPane.setLayout(new BorderLayout(6, 6));
         frame.setPreferredSize(new Dimension(800, 500));
 
-        JLabel background = new JLabel(new ImageIcon("resources/backgrounds/backgroundGL.png"));
+        JLabel background = new JLabel(new ImageIcon("resources/backgrounds/background3.jpg"));
         background.setLayout(new FlowLayout());
         contentPane.add(background);
 
         JButton LeaveButton = new JButton("leave");
-
-        JButton PlayGameButton = new JButton("Play Game");
-        PlayGameButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PlayArea play = new PlayArea();
-                main.setScreen(play);
-            }
-        });
 
         LeaveButton.addActionListener(new ActionListener() {
             @Override
@@ -46,7 +42,6 @@ public class GameLobby implements IScreen {
         });
 
         background.add(LeaveButton);
-        background.add(PlayGameButton);
 
         frame.pack();
         frame.setVisible(true);

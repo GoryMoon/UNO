@@ -1,4 +1,6 @@
-package uno.ui;
+package uno.ui.screens;
+
+import uno.ui.Main;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -29,11 +31,12 @@ public class MainMenu implements IScreen {
         background.setLayout(new FlowLayout());
         contentPane.add(background);
 
-        JButton CreateButton = new JButton("create game");
-        JButton JoinButton = new JButton("join game");
-        JButton SettingsButton = new JButton(new ImageIcon("resources/setting.png"));
+        JButton createButton = new JButton("create game");
+        createButton.setEnabled(false);
+        JButton joinButton = new JButton("join game");
+        JButton settingsButton = new JButton(new ImageIcon("resources/setting.png"));
 
-        CreateButton.addActionListener(new ActionListener() {
+        createButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             GameLobby lobby = new GameLobby();
@@ -41,15 +44,14 @@ public class MainMenu implements IScreen {
         }
     });
 
-        JoinButton.addActionListener(new ActionListener() {
+        joinButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GameLobby lobby = new GameLobby();
-                main.setScreen(lobby);
+                main.networkClient.connect();
             }
         });
 
-        SettingsButton.addActionListener(new ActionListener() {
+        settingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ErrorScreen error = new ErrorScreen();
@@ -57,13 +59,13 @@ public class MainMenu implements IScreen {
             }
         });
 
-        SettingsButton.setOpaque(false);
-        SettingsButton.setContentAreaFilled(false);
-        SettingsButton.setBorderPainted(false);
+        settingsButton.setOpaque(false);
+        settingsButton.setContentAreaFilled(false);
+        settingsButton.setBorderPainted(false);
 
-        background.add(CreateButton);
-        background.add(JoinButton);
-        background.add(SettingsButton, BorderLayout.NORTH);
+        background.add(createButton);
+        background.add(joinButton);
+        background.add(settingsButton, BorderLayout.NORTH);
 
 
 

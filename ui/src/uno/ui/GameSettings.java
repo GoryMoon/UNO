@@ -1,7 +1,6 @@
 package uno.ui;
 
-import uno.ui.IScreen;
-import uno.ui.Main;
+import uno.ui.screens.IScreen;
 
 import javax.swing.*;
 
