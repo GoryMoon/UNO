@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class PlayArea implements IScreen {
@@ -11,6 +12,8 @@ public class PlayArea implements IScreen {
     private Main main;
     private JPanel panel1;
     private JButton drawCard;
+    private JButton cardPile;
+   // private JButton stampe = new JButton(new ImageIcon("resources/unobak.png"));
 
     @Override
     public void show() {
@@ -34,9 +37,9 @@ public class PlayArea implements IScreen {
         pause.setContentAreaFilled(false);
         pause.setBorderPainted(false);
         background.add(pause, BorderLayout.EAST);
-        pause.addActionListener(new ActionListener() {
+        pause.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e ){
                 SettingsOverlay paus = new SettingsOverlay();
                 main.setScreen(paus);
             }
@@ -59,6 +62,45 @@ public class PlayArea implements IScreen {
 
         JButton card1 = new JButton(new ImageIcon("resources/cards/0blue.png"));
         panel1.add(card1);
+        card1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardPile.add(card1);
+               // card1.setVisible(false);
+                System.out.println("card 1 is removed");
+
+            }
+
+        });
+
+        String cardAdress = "resources/cards/";
+        JButton drawCard2 = new JButton("drawCard2");
+        background.add(drawCard2, BorderLayout.NORTH);
+        drawCard2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double j = 0 + (Math.random() * 9-0);
+                int i = (int) j;
+                   if(i < 9) {
+                       JButton card3 = new JButton(new ImageIcon(cardAdress + i + "yellow.png"));
+                       panel1.add(card3);
+                       frame.pack();
+                       System.out.println(i);
+                   }
+             }
+        });
+
+        JButton unoKnapp = new JButton(new ImageIcon("resources/unoknapp.png"));
+        panel1.add(unoKnapp);
+
+
+        cardPile = new JButton();
+        cardPile.setOpaque(false);
+        cardPile.setContentAreaFilled(false);
+        cardPile.setBorderPainted(false);
+        //cardPile.add(stampe);
+        background.add(cardPile, BorderLayout.CENTER);
+
 
         frame.pack();
         frame.setVisible(true);
