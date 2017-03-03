@@ -161,8 +161,6 @@ public class NetworkClient implements Runnable {
             socket = new Socket(hostname, port);
             in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-
-            System.out.println("Client network started!");
             return true;
         } catch (IOException e) {
             return false;
