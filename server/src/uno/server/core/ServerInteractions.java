@@ -1,10 +1,17 @@
 package uno.server.core;
 
+import javafx.util.Pair;
+import uno.logic.Card;
+import uno.logic.Color;
 import uno.logic.GameCore;
+import uno.logic.Type;
 import uno.network.api.MessageType;
 import uno.network.api.Packet;
+import uno.network.api.Player;
 import uno.network.server.NetworkServer;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.UUID;
 
 /**
@@ -20,18 +27,55 @@ public class ServerInteractions {
         this.server = gameServer;
         this.core = core;
         this.network = networkServer;
+        sendNextTurn();
     }
 
     /**
      * Handles string messages received from the client
      * @param message
      */
-    public void handleMessage(String message) {
-        //if (core.isWaitingForInput) {
-
-        //} else {
-
-        //}
+    public void handleMessage(Player player, String message) {
+        if (core.getWaitingForInput()) {
+            if (message.startsWith("wild#")) {
+                Color c = Color.valueOf(message.split("#")[1]);
+                core.wild(c);
+                sendNextTurn();
+            }
+        } else {
+            if (message.equals("cheat")) {
+                server.sendToAllPlayers("game-over");
+                ArrayList<Pair<String, Integer>> winList = new ArrayList<>();
+                core.getWinList().forEach(player1 -> winList.add(new Pair<>(player1.getName(), player1.getCards().size())));
+                server.sendToAllPlayers(new Pair<String, ArrayList>("win-list", winList));
+                return;
+            }
+            if (message.startsWith("play#")) {
+                String[] s = message.split("#");
+                Card card = new Card(Color.valueOf(s[2].toUpperCase()), Type.valueOf(s[1].toUpperCase()), Integer.parseInt(s[3]));
+                ArrayList<Card> cards = core.getPlayers().get(core.getCurrentPlayerIndex()).getCards();
+                for (Card c: cards) {
+                    if (c.equals(card)) {
+                        core.executeCard(c);
+                        System.out.println("executed card " + c);
+                        System.out.println("Waiting: " + core.getWaitingForInput());
+                        if (!core.getWaitingForInput() && !core.getWinCondition())
+                            sendNextTurn();
+                        if (core.getWinCondition()) {
+                            server.sendToAllPlayers("game-over");
+                            ArrayList<Pair<String, Integer>> winList = new ArrayList<>();
+                            core.getWinList().forEach(player1 -> winList.add(new Pair<>(player1.getName(), player1.getCards().size())));
+                            server.sendToAllPlayers(new Pair<String, ArrayList>("win-list", winList));
+                        }
+                        break;
+                    }
+                }
+            } else if (message.equals("draw-card")) {
+                core.getPlayers().get(core.getCurrentPlayerIndex()).endDraw();
+                sendNextTurn();
+            } else if (message.equals("uno")) {
+                core.getPlayers().get(core.getCurrentPlayerIndex()).setUno(true);
+            }
+        }
     }
 
     /**
@@ -42,6 +86,34 @@ public class ServerInteractions {
 
     }
 
+    private void sendNextTurn() {
+        ArrayList<uno.logic.Player> players = core.getPlayers();
+        ArrayList<Pair<UUID, Pair<String, Boolean>>> names = new ArrayList<>();
+        uno.logic.Player p = players.get(core.getCurrentPlayerIndex());
+
+        players.forEach(player -> names.add(new Pair<>(player.getUuid(), new Pair<>(player.getName(), player.unoStatus()))));
+        server.sendToAllPlayers(names);
+
+        ArrayList<Pair<UUID, Integer>> cardAmounts = new ArrayList<>();
+        players.forEach(player -> cardAmounts.add(new Pair<>(player.getUuid(), player.getCards().size())));
+        server.sendToAllPlayers(cardAmounts);
+
+        for (uno.logic.Player p2: players) {
+            ArrayList<String> cards = new ArrayList<>();
+            p2.getCards().forEach(card -> cards.add(cardToString(card)));
+            server.sendToPlayer(p2.getUuid(), cards);
+        }
+
+        Card topCard = core.getDeck().getPlayedCards().get(0);
+        server.sendToAllPlayers(new Pair<>("played-card", cardToString(topCard)));
+
+        server.sendToAllPlayers(new Pair<>("new-round", p.getUuid()));
+    }
+
+    private String cardToString(Card card) {
+        return card.getType().toString().toLowerCase() + "#" + card.getColor().toString().toLowerCase() + "#" + card.getNumber();
+    }
+
     /**
      * Use the one in GameServer instead<br/><br/>
      * Used to request an input from the player
@@ -50,6 +122,6 @@ public class ServerInteractions {
      */
     @Deprecated
     public void requestInputFromPlayer(UUID uuid, String requestType) {
-        network.sendToPlayer(network.getPlayerFromUUID(uuid), new Packet(MessageType.MESSAGE, "request-" + requestType));
+        server.requestInputFromPlayer(uuid, requestType);
     }
 }

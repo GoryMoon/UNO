@@ -10,6 +10,7 @@ import uno.network.server.NetworkServer;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -22,11 +23,25 @@ public class GameServer implements IServerMessageListener {
     private Player hostPlayer;
     private int currentPlayerCount;
     private ServerInteractions interactions;
+    public ArrayList<String> names;
+    private int port;
+    private int maxPlayers;
+
+    public GameServer() {
+        this(55333, 4);
+    }
 
     /**
      * Setups the server depending on the parameters put in
      */
     public GameServer(int port, int maxPlayers) {
+        this.port = port;
+        this.maxPlayers = maxPlayers;
+        names = new ArrayList<>(maxPlayers);
+        startNetwork();
+    }
+
+    private void startNetwork() {
         networkServer = new NetworkServer(this, port, maxPlayers);
         networkServer.start();
     }
@@ -50,35 +65,43 @@ public class GameServer implements IServerMessageListener {
 
     @Override
     public void onPlayerConnect(Player player) {
-        if (hostPlayer == null)
+        if (hostPlayer == null) {
+            System.out.println("Started new game lobby!");
             hostPlayer = player;
+        }
         currentPlayerCount++;
+        sendToAllPlayers("currentplayer#" + currentPlayerCount);
+        System.out.println("Player connected: " + player.getAddress() + ": " + player.getID() + " #" + currentPlayerCount);
     }
 
     @Override
     public void onPlayerDisconnect(Player player, boolean expected) {
-        if (player == hostPlayer) {
+        if (player == hostPlayer || currentPlayerCount-1 < 2) {
             networkServer.stop();
-            networkServer.start();
+            startNetwork();
+            System.out.println("Stopped game!");
             currentPlayerCount = 0;
             core = null;
+            hostPlayer = null;
         } else {
             currentPlayerCount--;
         }
+        System.out.println("Player disconnected: " + player.getAddress() + ": " + player.getID() + " #" + currentPlayerCount);
     }
 
     @Override
     public void onMessageReceived(Player player, MessageType type, Object data) {
         if (data instanceof String) {
             if (core != null && interactions != null) {
-                interactions.handleMessage((String) data);
+                interactions.handleMessage(player, (String) data);
             }
 
-            if (data.equals("start-game") && core == null && currentPlayerCount >= 2) {
+            if (data.equals("start-game") && core == null && currentPlayerCount >= 1) {
                 core = new GameCore(this);
                 core.setupGame(currentPlayerCount, networkServer.getPlayerUUIDs());
-                sendToAllPlayersExcept(player, "game-started");
+                sendToAllPlayers("game-started");
                 interactions = new ServerInteractions(this, core, networkServer);
+                System.out.println("Game Started");
             }
         } else {
             if (core != null && interactions != null) {
@@ -94,11 +117,19 @@ public class GameServer implements IServerMessageListener {
         return interactions;
     }
 
+    public void sendToPlayer(Player player, Object message) {
+        networkServer.sendToPlayer(player, new Packet(MessageType.MESSAGE, message));
+    }
+
+    public void sendToPlayer(UUID uuid, Object message) {
+        networkServer.sendToPlayer(networkServer.getPlayerFromUUID(uuid), new Packet(MessageType.MESSAGE, message));
+    }
+
     /**
      * Ease of use method for sending a message to all players
      * @param message The message to be sent
      */
-    public void sendToAllPlayers(String message) {
+    public void sendToAllPlayers(Object message) {
         networkServer.sendToAllPlayers(new Packet(MessageType.MESSAGE, message));
     }
 
@@ -107,7 +138,7 @@ public class GameServer implements IServerMessageListener {
      * @param player The player no to send to
      * @param message The message to be sent
      */
-    public void sendToAllPlayersExcept(Player player, String message) {
+    public void sendToAllPlayersExcept(Player player, Object message) {
         networkServer.sendToAllExcept(player, new Packet(MessageType.MESSAGE, message));
     }
 
@@ -117,6 +148,6 @@ public class GameServer implements IServerMessageListener {
      * @param requestType String of what's requested, the message is an collaboration between the server and client
      */
     public void requestInputFromPlayer(UUID uuid, String requestType) {
-        networkServer.sendToPlayer(networkServer.getPlayerFromUUID(uuid), new Packet(MessageType.MESSAGE, "request-" + requestType));
+        networkServer.sendToPlayer(networkServer.getPlayerFromUUID(uuid), new Packet(MessageType.MESSAGE, "request#" + requestType));
     }
 }
