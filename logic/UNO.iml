@@ -36,14 +36,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library name="UnoNetwork.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/UnoNetwork.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="module" module-name="server" />
+    <orderEntry type="module" module-name="network" />
   </component>
 </module>

@@ -3,14 +3,16 @@ package uno.logic;
 /**
  * This class keeps track of all the information about the cards, such as color, type and number.
  * 
- * @author Daniel Rydén & Fressia Moreno
+ * @author Daniel Rydï¿½n & Fressia Moreno
  * @version 2017-03-03
  */
 
 public class Card {
+
 	Color color;
 	Type type;
 	int number;
+
 	/**
 	 * Takes in all the properties a card should have and creates it
 	 * @param color The color of the card
@@ -21,14 +23,15 @@ public class Card {
 		this.color = color;
 		this.type = type;
 		this.number = number;
-
 	}
+
 	/**
 	 * @return color Returns the color of the card
 	 */
 	public Color getColor() {
 		return color;
 	}
+
 	/**
 	 * @return type Returns the type of the card
 	 */
@@ -42,15 +45,12 @@ public class Card {
 	public int getNumber() {
 		return number;
 	}
-	
+
 	@Override
 	public String toString() {
-		return 
-				"Color: " + color + 
-	            " Type: " + type +
-	            " Number: " + number;
+		return "Card{" + "color=" + color + ", type=" + type + ", number=" + number + '}';
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Card) {

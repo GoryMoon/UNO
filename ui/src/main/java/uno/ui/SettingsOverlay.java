@@ -1,12 +1,12 @@
 package uno.ui;
 
-import uno.ui.screens.IScreen;
 import uno.ui.screens.MainMenu;
-import uno.ui.screens.PlayArea;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 public class SettingsOverlay {
     private Main main;

@@ -1,11 +1,11 @@
 package uno.logic;
 
+import uno.server.core.GameServer;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.UUID;
-
-import uno.server.core.GameServer;
 
 /**
  * This class initializes the game by creating a deck, all the players who shall play the game and draws the first card
@@ -14,7 +14,7 @@ import uno.server.core.GameServer;
  * <p>
  * Also keeps track on whose turn it is and who the next player is depending on the direction of the turn order (clockwise/counterclockwise)
  * 
- * @author Daniel Rydén & Fressia Moreno
+ * @author Daniel Rydï¿½n & Fressia Moreno
  * @version 2017-03-03
  */
 
@@ -35,8 +35,8 @@ public class GameCore {
      */
 	public GameCore(GameServer gameServer) {
 		deck = new Deck();
-		players = new ArrayList<Player>();
-		skippedPlayers = new HashMap<Integer, UUID>();
+		players = new ArrayList<>();
+		skippedPlayers = new HashMap<>();
 		clockwise = true;
 		waitingForInput = false;
 		this.gameServer = gameServer;
@@ -50,33 +50,46 @@ public class GameCore {
 	 */
 	public void setupGame(int playerCount, ArrayList<UUID> uuids) {
 		deck.setupDeck();
-		for(int i = 0; i < playerCount; i++) {
-			Player player = new Player(("Player "+(i+1)),deck, this, uuids.get(i));
+		for (int i = 0; i < playerCount; i++) {
+			Player player = new Player(("Player "+ (i+1)) ,deck, this, uuids.get(i));
 			player.setup();
 			players.add(player);
 		}
 		currentPlayerIndex = 0;
 		firstDraw();
-		if(currentPlayerIndex == 0 || !clockwise) {
+		if (currentPlayerIndex == 0 || !clockwise) {
 			endTurn();
 		}
 	}
-	
-	
+
 	/** 
 	 * When the game starts a card is drawn so the first player can start it's turn, the first draw also may have a special effect
 	 */
 	public void firstDraw() {
 		deck.getPlayedCards().add(0, deck.draw());
 		Card firstCard = deck.getPlayedCards().get(0);
-		switch(firstCard.type) {
-			case DRAW: drawEffect(2); break;
-			case NUMBER: break;
-			case REVERSE: currentPlayerIndex = 1; reverseEffect(); break;
-			case SKIP: skipEffect(); break;
-			case WILD: endTurn(); waitingForInput = true; gameServer.getInteractions().requestInputFromPlayer(players.get(getNextPlayer()).getUuid(), "wild"); break;
-			case WILD_DRAW: deck.mergeDecks(); firstDraw(); break;
-		
+		switch (firstCard.type) {
+			case DRAW:
+				drawEffect(2);
+				break;
+			case NUMBER:
+				break;
+			case REVERSE:
+				currentPlayerIndex = 1;
+				reverseEffect();
+				break;
+			case SKIP:
+				skipEffect();
+				break;
+			case WILD:
+				endTurn();
+				waitingForInput = true;
+				gameServer.requestInputFromPlayer(players.get(getNextPlayer()).getUuid(), "wild");
+				break;
+			case WILD_DRAW:
+				deck.mergeDecks();
+				firstDraw();
+				break;
 		}
 	}
 	
@@ -89,24 +102,35 @@ public class GameCore {
 	public void executeCard(Card card) {
 		
 		Card temp = deck.getPlayedCards().get(0);
-		if((card.color == temp.color) ||  ((card.type == temp.type) && card.number == temp.number) || (card.type == Type.WILD) || (card.type == Type.WILD_DRAW)) {
+		if ((card.color == temp.color) ||  ((card.type == temp.type) && card.number == temp.number) || (card.type == Type.WILD) || (card.type == Type.WILD_DRAW)) {
 			deck.getPlayedCards().add(0, card);
 			players.get(currentPlayerIndex).getCards().remove(card);
 			switch(card.type){
-				case DRAW: drawEffect(2); break;
-				case NUMBER: break;
-				case REVERSE: reverseEffect();
-				case SKIP: skipEffect(); break;
-				case WILD: waitingForInput = true; gameServer.getInteractions().requestInputFromPlayer(players.get(currentPlayerIndex).getUuid(), "wild");  break; 
-				case WILD_DRAW: waitingForInput = true; gameServer.getInteractions().requestInputFromPlayer(players.get(currentPlayerIndex).getUuid(), "wild"); drawEffect(4); break;
-				
-			
+				case DRAW:
+					drawEffect(2);
+					break;
+				case NUMBER:
+					break;
+				case REVERSE:
+					reverseEffect();
+				case SKIP:
+					skipEffect();
+					break;
+				case WILD:
+					waitingForInput = true;
+					gameServer.getInteractions().requestInputFromPlayer(players.get(currentPlayerIndex).getUuid(), "wild");
+					break;
+				case WILD_DRAW:
+					waitingForInput = true;
+					gameServer.getInteractions().requestInputFromPlayer(players.get(currentPlayerIndex).getUuid(), "wild");
+					drawEffect(4);
+					break;
 			}
-			if((players.get(currentPlayerIndex).getCards().size() == 1) && !players.get(currentPlayerIndex).unoStatus()) {
+
+			if ((players.get(currentPlayerIndex).getCards().size() == 1) && !players.get(currentPlayerIndex).unoStatus()) {
 				players.get(currentPlayerIndex).drawCard();
 				players.get(currentPlayerIndex).drawCard();
-			}
-			else if((players.get(currentPlayerIndex).getCards().size() != 1) && players.get(currentPlayerIndex).unoStatus()) {
+			} else if ((players.get(currentPlayerIndex).getCards().size() != 1) && players.get(currentPlayerIndex).unoStatus()) {
 				players.get(currentPlayerIndex).drawCard();
 				players.get(currentPlayerIndex).drawCard();
 				players.get(currentPlayerIndex).drawCard();
@@ -114,46 +138,38 @@ public class GameCore {
 			}
 			
 			players.get(currentPlayerIndex).setUno(false);
-			
 			setWinCondition();
-			
 			
 			if(!waitingForInput && !winCondition) {
 				endTurn();
 			}
-
-		}
-		else{
+		} else{
 			return;
 		}
 		
 	}
-	
-	
+
 	/** 
 	 * Forces the next player to draw 2 or 4 cards depending on which number you send and also adds the next player in the skipped list
 	 * @param count The number of cards to be drawn
 	 */
 	public void drawEffect(int count) {
-		for(int i = 0; i < count; i++){
+		for (int i = 0; i < count; i++){
 			players.get(getNextPlayer()).drawCard();
 		}
 		skipEffect();
 	}
 	
-	
-	
 	/**
 	 * Reverses the turn order, if there're only two players this acts like a skip card
 	 */
 	public void reverseEffect() {
-		if(players.size() == 2) {
+		if (players.size() == 2) {
 			skipEffect();
 		}
 		else clockwise = !clockwise;
 	}
-	
-	
+
 	/**
 	 * Adds the next player in the skipped list, their next turn is skipped
 	 */
@@ -169,11 +185,19 @@ public class GameCore {
 	public void wild(Color color) {
 		Card card = deck.getPlayedCards().get(0);
 		waitingForInput = false;
-		switch(color){
-			case RED: card.color = Color.RED; break;
-			case BLUE: card.color = Color.BLUE; break;
-			case YELLOW: card.color = Color.YELLOW; break;
-			case GREEN: card.color = Color.GREEN; break;
+		switch (color) {
+			case RED:
+				card.color = Color.RED;
+				break;
+			case BLUE:
+				card.color = Color.BLUE;
+				break;
+			case YELLOW:
+				card.color = Color.YELLOW;
+				break;
+			case GREEN:
+				card.color = Color.GREEN;
+				break;
 		}
 		endTurn();
 	}
@@ -203,6 +227,7 @@ public class GameCore {
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
+
 	/**
 	 * @return clockwise The current turn order, clockwise or counter-clockwise
 	 */
@@ -217,17 +242,17 @@ public class GameCore {
 		return skippedPlayers;
 	}
 	
-	
 	/**
 	 * Changes the current player to the the next one in turn who is not in the skippedPlayer index
 	 */
 	public void endTurn() {
-		while(skippedPlayers.containsKey(getNextPlayer())) {
+		while (skippedPlayers.containsKey(getNextPlayer())) {
 			skippedPlayers.remove(getNextPlayer());
 			currentPlayerIndex = getNextPlayer();	
 		}
 		currentPlayerIndex = getNextPlayer();
 	}
+
 	/**
 	 * @return currentPlayerIndex The index which keeps track on who's turn it is
 	 */
@@ -241,12 +266,14 @@ public class GameCore {
 	public boolean getWaitingForInput() {
 		return waitingForInput;
 	}
+
 	/**
 	 * @return deck	Returns the deck the current game is using
 	 */
 	public Deck getDeck() {
 		return deck;
 	}
+
 	/**
 	 * 	If a player has zero cards the game sets a win condition flag for the server to look for
 	 */

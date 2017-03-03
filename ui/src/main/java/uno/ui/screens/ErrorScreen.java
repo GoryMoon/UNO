@@ -2,9 +2,8 @@ package uno.ui.screens;
 
 import uno.ui.Main;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by Kungen on 2017-02-14.

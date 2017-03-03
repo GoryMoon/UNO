@@ -1,5 +1,6 @@
 package uno.logic;
-import java.util.*;
+
+import java.util.ArrayList;
 
 /**
  * This class keeps track of the deck, the class can create a deck with all the cards as well as create a "played cards pile" where you put all the played cards
@@ -8,7 +9,7 @@ import java.util.*;
  * <p>
  * In this class is also where you draw cards.
  * 
- * @author Daniel Rydén & Fressia Moreno
+ * @author Daniel Rydï¿½n & Fressia Moreno
  * @version 2017-03-03
  */
 public class Deck {
@@ -20,14 +21,14 @@ public class Deck {
 		cards = new ArrayList<Card>();
 		playedCards = new ArrayList<Card>();
 	}
-	
-	
+
 	/**
 	 * @return cards Returns the cards that are in the decks
 	 */
 	public ArrayList<Card> getCards() {
 		return cards;
 	}
+
 	/**
 	 * @return playedCards Returns the pile of cards that have been played in the duration of the game
 	 */

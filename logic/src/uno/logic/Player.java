@@ -1,11 +1,13 @@
 package uno.logic;
-import	java.util.*;
+
+import java.util.ArrayList;
+import java.util.UUID;
 /**
  * Has all info about the players such as their hands, their unique identifier and if they "called UNO" or not
  * <p>
  * This class can also draw cards for the player and put it in their hand
  * 
- * @author Daniel Rydén & Fressia Moreno
+ * @author Daniel Rydï¿½n & Fressia Moreno
  * @version 2017-03-03
  */
 
@@ -27,12 +29,13 @@ public class Player {
 	 */
 	public Player(String name, Deck deck, GameCore gameCore, UUID uuid) {
 		this.name = name;
-		cards = new ArrayList<Card>();
+		cards = new ArrayList<>();
 		this.deck = deck;
 		this.gameCore = gameCore;
 		uno = false;
 		this.uuid = uuid;
 	}
+
 	/**
 	 * Draws seven cards when the game starts
 	 */
@@ -41,6 +44,7 @@ public class Player {
 			drawCard();
 		}
 	}
+
 	/**
 	 * Draws a card and adds it to the player's hand
 	 */
@@ -49,21 +53,18 @@ public class Player {
 	}
 	
 	/**
-	 * when out of options the player can choose to draw a card instead, 
-	 * if the card is playable it is immediately played. After either case the turn ends.
+	 * When out of options the player can choose to draw a card instead,<br/>
+	 * If the card is playable it is immediately played. After either case the turn ends.
 	 */
 	public void endDraw() {
 		Card card = deck.draw();
 		Card temp = gameCore.deck.getPlayedCards().get(0);
 		if((card.color == temp.color) ||  ((card.type == temp.type) && card.number == temp.number) || (card.type == Type.WILD) || (card.type == Type.WILD_DRAW)){
 			gameCore.executeCard(card);
-		}
-		
-		else {
+		} else {
 			cards.add(card);
 			gameCore.endTurn();
 		}
-		
 	}
 	
 	/**

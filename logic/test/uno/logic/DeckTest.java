@@ -1,13 +1,11 @@
 package uno.logic;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
-import java.util.*;
-
-import org.junit.*;
-
-import uno.logic.Card;
-import uno.logic.Color;
-import uno.logic.Deck;
-import uno.logic.Type;
 
 
 public class DeckTest {

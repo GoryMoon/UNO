@@ -16,7 +16,6 @@ import java.util.ArrayList;
 /**
  * Created by Kungen on 2017-02-12.
  */
-
 public class Main implements IClientMessageListener {
 
     private IScreen currentScreen;

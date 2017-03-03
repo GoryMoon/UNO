@@ -3,11 +3,9 @@ package uno.ui.screens;
 import javafx.util.Pair;
 import uno.ui.Main;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.border.Border;
+import java.awt.*;
+import java.util.ArrayList;
 
 
 public class GameFinished implements IScreen {

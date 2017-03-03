@@ -48,6 +48,14 @@ public class NetworkServer implements Runnable {
     }
 
     /**
+     * Starts listening for new players and starts the thread for the network
+     */
+    public void start() {
+        running = true;
+        mainNetworkThread.start();
+    }
+
+    /**
      * Stops the network, stops listening for new players and disconnects all the currently connected players
      */
     public void stop() {
@@ -60,14 +68,6 @@ public class NetworkServer implements Runnable {
         }
         for (Map.Entry<Player, PlayerThread> entry: playerThreads.entrySet())
             entry.getValue().disconnectPlayer();
-    }
-
-    /**
-     * Starts listening for new players and starts the thread for the network
-     */
-    public void start() {
-        running = true;
-        mainNetworkThread.start();
     }
 
     /**

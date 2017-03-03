@@ -1,18 +1,13 @@
 package uno.logic;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import uno.server.core.GameServer;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-import org.junit.Test;
-
-import uno.logic.Card;
-import uno.logic.Deck;
-import uno.logic.Player;
-import uno.server.core.GameServer;
-
-import org.junit.Before;
+import static org.junit.Assert.assertTrue;
 /**
  * 
  * @author nakhle

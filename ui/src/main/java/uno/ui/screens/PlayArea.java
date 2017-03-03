@@ -1,7 +1,6 @@
 package uno.ui.screens;
 
 import javafx.util.Pair;
-import uno.network.api.Player;
 import uno.ui.Card;
 import uno.ui.Main;
 import uno.ui.SettingsOverlay;

@@ -1,15 +1,14 @@
 package uno.logic;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import uno.server.core.GameServer;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-
-import org.junit.Test;
-import org.junit.Before;
-
-import uno.server.core.GameServer;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 /**
  * 
  * @author nakhle
