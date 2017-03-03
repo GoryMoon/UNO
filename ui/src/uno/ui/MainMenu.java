@@ -18,14 +18,14 @@ public class MainMenu implements IScreen {
 
     @Override
     public void show() {
-        frame = new JFrame("Uno uno.ui.Main Manu");
+        frame = new JFrame("Uno uno.ui.Main Menu");
 
         frame.setLayout(new BorderLayout());
         Container contentPane = frame.getContentPane();
         contentPane.setLayout(new BorderLayout(6, 6));
         frame.setPreferredSize(new Dimension(800, 500));
 
-        JLabel background = new JLabel(new ImageIcon("resources/backgrounds/background3.jpg"));
+        JLabel background = new JLabel(new ImageIcon("resources/backgrounds/uno.png"));
         background.setLayout(new FlowLayout());
         contentPane.add(background);
 

@@ -90,6 +90,9 @@ public class PlayArea implements IScreen {
              }
         });
 
+        JButton unoKnapp = new JButton(new ImageIcon("resources/unoknapp.png"));
+        panel1.add(unoKnapp);
+
 
         cardPile = new JButton();
         cardPile.setOpaque(false);
