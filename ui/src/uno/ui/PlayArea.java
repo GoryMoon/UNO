@@ -22,6 +22,7 @@ public class PlayArea implements IScreen {
         Container contentPane = frame.getContentPane();
         contentPane.setLayout(new BorderLayout(6, 6));
         frame.setPreferredSize(new Dimension(1000, 700));
+        frame.setLocationRelativeTo(null);
 
         JLabel background = new JLabel(new ImageIcon("resources/backgrounds/background3.jpg"));
         background.setLayout(new BorderLayout());
@@ -40,25 +41,14 @@ public class PlayArea implements IScreen {
         pause.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e ){
-                SettingsOverlay paus = new SettingsOverlay();
-                main.setScreen(paus);
+
+                SettingsOverlay so = new SettingsOverlay();
+                so.setMain(main);
+                so.show();
+
             }
         });
 
-        drawCard = new JButton(new ImageIcon("resources/unobak.png"));
-        drawCard.setOpaque(false);
-        drawCard.setContentAreaFilled(false);
-        drawCard.setBorderPainted(false);
-
-        background.add(drawCard, BorderLayout.WEST);
-        drawCard.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JButton card2 = new JButton(new ImageIcon("resources/cards/wildred.png"));
-                panel1.add(card2);
-                frame.pack();  //måste forma om när man har ändrat.
-            }
-        });
 
         JButton card1 = new JButton(new ImageIcon("resources/cards/0blue.png"));
         panel1.add(card1);
@@ -74,8 +64,11 @@ public class PlayArea implements IScreen {
         });
 
         String cardAdress = "resources/cards/";
-        JButton drawCard2 = new JButton("drawCard2");
-        background.add(drawCard2, BorderLayout.NORTH);
+        JButton drawCard2 = new JButton(new ImageIcon("resources/unobak.png"));
+        drawCard2.setOpaque(false);
+        drawCard2.setContentAreaFilled(false);
+        drawCard2.setBorderPainted(false);
+        background.add(drawCard2, BorderLayout.WEST);
         drawCard2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -101,6 +94,22 @@ public class PlayArea implements IScreen {
 
         frame.pack();
         frame.setVisible(true);
+
+          /*
+        drawCard = new JButton(new ImageIcon("resources/unobak.png"));
+        drawCard.setOpaque(false);
+        drawCard.setContentAreaFilled(false);
+        drawCard.setBorderPainted(false);
+
+        background.add(drawCard, BorderLayout.WEST);
+        drawCard.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JButton card2 = new JButton(new ImageIcon("resources/cards/wildred.png"));
+                panel1.add(card2);
+                frame.pack();  //måste forma om när man har ändrat.
+            }
+        }); */
     }
 
 
