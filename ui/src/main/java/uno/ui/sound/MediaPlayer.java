@@ -7,6 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * Not planned but wanted a quick media player, used this<br/>
+ * Modified to work for us, changed file input and looping
+ * @author dberm22, https://github.com/dberm22/DBoard/blob/master/src/com/dberm22/utils/MediaPlayer.java
+ */
 public class MediaPlayer implements Runnable{
 
     private String filename;
@@ -45,7 +50,6 @@ public class MediaPlayer implements Runnable{
         }
         else //if (filename.toLowerCase().endsWith(".mp3") || filename.toLowerCase().endsWith(".ogg"))
         {
-
             final URL fileurl = Main.class.getResource(filename);
             final AudioInputStream in = AudioSystem.getAudioInputStream(fileurl);
 

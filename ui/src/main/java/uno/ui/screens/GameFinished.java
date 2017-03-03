@@ -9,35 +9,22 @@ import java.util.ArrayList;
 
 
 public class GameFinished implements IScreen {
-    JFrame frame;
-    JButton backButton;
+
+    private JFrame frame;
     private Main main;
-    private ArrayList<Pair<String, Integer>> winList;
     private JPanel winListPanel;
 
-    public GameFinished() {
-
-    }
-
+    @Override
     public void show() {
-        makeFrame();
-    }
-
-    public void hide() {
-        this.frame.setVisible(false);
-    }
-
-    private void makeFrame() {
-
         frame = new JFrame("Game finished");
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        JLabel gameLabel = new JLabel(new ImageIcon(Main.class.getResource("assets/backgrounds/finished.jpg")));
-        gameLabel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        frame.add(gameLabel);
         frame.setPreferredSize(new Dimension(800, 500));
 
+        JLabel background = new JLabel(new ImageIcon(Main.class.getResource("assets/backgrounds/finished.jpg")));
+        background.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        //Made transparent
         winListPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -51,19 +38,29 @@ public class GameFinished implements IScreen {
         winListPanel.setLayout(new BoxLayout(winListPanel, BoxLayout.Y_AXIS));
         winListPanel.setOpaque(false);
 
-        backButton = new JButton("Back to menu");
-        winListPanel.add(backButton);
+        JButton backButton = new JButton("Back to menu");
         backButton.addActionListener(e -> main.setScreen(ScreenInstances.getMainMenu()));
 
-        gameLabel.add(winListPanel);
+        frame.add(background);
+        background.add(winListPanel);
+        winListPanel.add(backButton);
 
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
+    @Override
+    public void hide() {
+        this.frame.setVisible(false);
+    }
+
+    @Override
+    public void setMain(Main main) {
+        this.main = main;
+    }
+
     public void setWinList(ArrayList<Pair<String, Integer>> winList) {
-        this.winList = winList;
         winListPanel.add(new JLabel(""));
         winListPanel.add(new JLabel(""));
         JLabel info = new JLabel("Position   Player Name          Cards Left");
@@ -76,16 +73,6 @@ public class GameFinished implements IScreen {
         }
         winListPanel.repaint();
         frame.pack();
-
     }
-
-    public void setMain(Main main) {
-        this.main = main;
-    }
-
-    public void back() {
-
-    }
-
 }
 

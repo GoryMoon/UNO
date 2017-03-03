@@ -30,8 +30,4 @@ public class GameSettings implements IScreen {
         this.main = main;
     }
 
-    @Override
-    public void back() {
-
-    }
 }

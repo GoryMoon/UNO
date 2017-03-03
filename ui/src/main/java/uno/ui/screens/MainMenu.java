@@ -9,55 +9,46 @@ import java.awt.*;
  * Created by Kungen on 2017-02-14.
  */
 public class MainMenu implements IScreen {
+
     private JFrame frame;
-    private ImageIcon imageicon;
-
     private Main main;
-
-    public MainMenu() {
-    }
 
     @Override
     public void show() {
         frame = new JFrame("Uno Main Menu");
-
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        Container contentPane = frame.getContentPane();
-        contentPane.setLayout(new BorderLayout(6, 6));
+        frame.getContentPane().setLayout(new BorderLayout(6, 6));
         frame.setPreferredSize(new Dimension(800, 500));
 
         JLabel background = new JLabel(new ImageIcon(Main.class.getResource("assets/backgrounds/uno.png")));
         background.setLayout(new FlowLayout());
-        contentPane.add(background);
 
-        JButton createButton = new JButton("create game");
-        createButton.setEnabled(false);
-        JButton joinButton = new JButton("join game");
-        JButton settingsButton = new JButton(new ImageIcon(Main.class.getResource("assets/setting.png")));
-        settingsButton.setVisible(false);
-
+        JButton createButton = new JButton("Create game");
+        createButton.setEnabled(false); //Disabled
+        createButton.setToolTipText("Disabled, join game auto makes first to host");
         createButton.addActionListener(e -> {
             GameLobby lobby = new GameLobby();
             main.setScreen(lobby);
         });
 
+        JButton joinButton = new JButton("Join game");
         joinButton.addActionListener(e -> main.networkClient.connect());
 
-        settingsButton.addActionListener(e -> {
-            ErrorScreen error = new ErrorScreen();
-            main.setScreen(error);
-        });
-
+        JButton settingsButton = new JButton(new ImageIcon(Main.class.getResource("assets/setting.png")));
+        settingsButton.setVisible(false); //Disabled
         settingsButton.setOpaque(false);
         settingsButton.setContentAreaFilled(false);
         settingsButton.setBorderPainted(false);
+        settingsButton.addActionListener(e -> {
+            ScreenInstances.getErrorScreen().error = "Not implemented";
+            main.setScreen(ScreenInstances.getErrorScreen());
+        });
 
+        frame.add(background);
         background.add(createButton);
         background.add(joinButton);
         background.add(settingsButton, BorderLayout.NORTH);
-
-
 
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -67,11 +58,6 @@ public class MainMenu implements IScreen {
     @Override
     public void hide() {
         frame.setVisible(false);
-    }
-
-    @Override
-    public void back() {
-
     }
 
     @Override

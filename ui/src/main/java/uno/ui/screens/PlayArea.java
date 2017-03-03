@@ -3,7 +3,7 @@ package uno.ui.screens;
 import javafx.util.Pair;
 import uno.ui.Card;
 import uno.ui.Main;
-import uno.ui.SettingsOverlay;
+import uno.ui.PauseOverlay;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,20 +14,18 @@ import java.util.UUID;
 
 
 public class PlayArea implements IScreen {
+
     private JFrame frame;
     private Main main;
     private JPanel cardPanel;
     private JPanel infoPanel;
     private JLabel cardPile;
-    private JToggleButton unoKnapp;
-    private JLabel background;
-    private JLabel turn;
-
+    private JLabel turnInfo;
+    private JToggleButton unoButton;
     private ArrayList<Pair<UUID, Pair<String, Boolean>>> players;
     private ArrayList<Pair<UUID, Integer>> cardAmount;
     private ArrayList<Card> cards;
     private UUID currentPlayer;
-    private Card lastPlayedCard;
     private boolean currentTurn;
 
     @Override
@@ -40,7 +38,7 @@ public class PlayArea implements IScreen {
         frame.setPreferredSize(new Dimension(1000, 700));
         frame.setLocationRelativeTo(null);
 
-        background = new JLabel(new ImageIcon(Main.class.getResource("assets/backgrounds/background3.jpg")));
+        JLabel background = new JLabel(new ImageIcon(Main.class.getResource("assets/backgrounds/background3.jpg")));
         background.setLayout(new BorderLayout());
         contentPane.add(background);
 
@@ -49,9 +47,9 @@ public class PlayArea implements IScreen {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
         bottomPanel.setOpaque(false);
-        turn = new JLabel();
+        turnInfo = new JLabel();
         setTurnText();
-        bottomPanel.add(turn, Component.CENTER_ALIGNMENT);
+        bottomPanel.add(turnInfo, Component.CENTER_ALIGNMENT);
         bottomPanel.add(cardPanel);
         background.add(bottomPanel, BorderLayout.SOUTH);
 
@@ -61,7 +59,7 @@ public class PlayArea implements IScreen {
         pause.setBorderPainted(false);
         background.add(pause, BorderLayout.EAST);
         pause.addActionListener(e -> {
-            SettingsOverlay so = new SettingsOverlay();
+            PauseOverlay so = new PauseOverlay();
             so.setMain(main);
             so.show();
         });
@@ -78,8 +76,8 @@ public class PlayArea implements IScreen {
             currentTurn = false;
          });
 
-        unoKnapp = new JToggleButton(new ImageIcon(Main.class.getResource("assets/unoknapp.png")));
-        unoKnapp.addActionListener(e -> {
+        unoButton = new JToggleButton(new ImageIcon(Main.class.getResource("assets/unoknapp.png")));
+        unoButton.addActionListener(e -> {
             main.sendMessageToServer("uno");
         });
 
@@ -96,7 +94,20 @@ public class PlayArea implements IScreen {
         frame.setVisible(true);
     }
 
-    public Pair<UUID, Pair<String, Boolean>> getPlayer(UUID uuid) {
+    @Override
+    public void hide() {
+        players = null;
+        cardAmount = null;
+        cards = null;
+        frame.setVisible(false);
+    }
+
+    @Override
+    public void setMain(Main main) {
+        this.main = main;
+    }
+
+    private Pair<UUID, Pair<String, Boolean>> getPlayer(UUID uuid) {
         if (players != null && currentPlayer != null) {
             for (Pair<UUID, Pair<String, Boolean>> pair: players) {
                 if (pair.getKey().equals(uuid)) {
@@ -108,7 +119,7 @@ public class PlayArea implements IScreen {
     }
 
     private void setTurnText() {
-        turn.setText("Current turn is: " + (currentTurn ? "You": getPlayer(currentPlayer).getValue().getKey()));
+        turnInfo.setText("Current turnInfo is: " + (currentTurn ? "You": getPlayer(currentPlayer).getValue().getKey()));
         frame.pack();
     }
 
@@ -141,7 +152,7 @@ public class PlayArea implements IScreen {
                             infoPanel.add(new JLabel(players.get(i).getValue().getKey() + " <" + cardAmount.get(i).getValue() + ">" + (players.get(i).getValue().getValue() ? "Uno": "")));
                         }
                     }
-                    infoPanel.add(unoKnapp);
+                    infoPanel.add(unoButton);
                     for(int i = 0; i < players.size() - half; i++){
                         int j = (int) (half + i);
                         if (!players.get(j).getKey().equals(main.networkClient.getPlayer().getID())) {
@@ -169,7 +180,7 @@ public class PlayArea implements IScreen {
                 setTurnText();
                 frame.pack();
             } else if (((Pair) o).getKey().equals("played-card")) {
-                lastPlayedCard = new Card(((String)((Pair) o).getValue()).split("#"));
+                Card lastPlayedCard = new Card(((String) ((Pair) o).getValue()).split("#"));
                 cardPile.setIcon(new ImageIcon(Main.class.getResource("assets/cards/" + lastPlayedCard.toString() + ".png")));
             }
         }
@@ -185,25 +196,6 @@ public class PlayArea implements IScreen {
                 }
             }
         }
-    }
-
-
-    @Override
-    public void hide() {
-        players = null;
-        cardAmount = null;
-        cards = null;
-        frame.setVisible(false);
-    }
-
-    @Override
-    public void back() {
-
-    }
-
-    @Override
-    public void setMain(Main main) {
-        this.main = main;
     }
 
     private static String cardToString(Card card) {

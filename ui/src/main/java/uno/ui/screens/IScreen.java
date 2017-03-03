@@ -9,7 +9,6 @@ public interface IScreen {
 
     void show();
     void hide();
-    void back();
     void setMain(Main main);
 
 }
