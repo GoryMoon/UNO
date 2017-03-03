@@ -1,7 +1,9 @@
 package uno.logic;
 import	java.util.*;
 /**
- * 
+ * Has all info about the players such as their hands, their unique identifier and if they "called UNO" or not
+ * <p>
+ * This class can also draw cards for the player and put it in their hand
  * 
  * @author Daniel Rydén & Fressia Moreno
  * @version 2017-03-03
