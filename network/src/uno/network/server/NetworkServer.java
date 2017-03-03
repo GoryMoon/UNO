@@ -28,6 +28,7 @@ public class NetworkServer implements Runnable {
     private boolean running = false;
     private Thread mainNetworkThread;
     private HashMap<Player, PlayerThread> playerThreads;
+    private ArrayList<Player> players;
     private ServerSocket serverSocket;
     private Socket socket = null;
 
@@ -42,6 +43,7 @@ public class NetworkServer implements Runnable {
         this.port = port;
         this.maxPlayers = maxPlayers;
         this.playerThreads = new HashMap<>();
+        this.players = new ArrayList<>();
         this.mainNetworkThread = new Thread(this, "GameProtocol Network Thread");
     }
 
@@ -58,8 +60,6 @@ public class NetworkServer implements Runnable {
         }
         for (Map.Entry<Player, PlayerThread> entry: playerThreads.entrySet())
             entry.getValue().disconnectPlayer();
-        //TODO remove?
-        System.out.println("GameProtocol Network Thread stopped!");
     }
 
     /**
@@ -85,8 +85,7 @@ public class NetworkServer implements Runnable {
      */
     public ArrayList<UUID> getPlayerUUIDs() {
         ArrayList<UUID> uuids = new ArrayList<>();
-        for (Map.Entry<Player, PlayerThread> entry: playerThreads.entrySet())
-            uuids.add(entry.getKey().getID());
+        players.forEach(player -> uuids.add(player.getID()));
         return uuids;
     }
 
@@ -166,9 +165,10 @@ public class NetworkServer implements Runnable {
                 UUID uuid = UUID.randomUUID();
                 Player player = new Player(socket.getInetAddress(), uuid);
                 PlayerThread thread = new PlayerThread(this, socket, player);
-                listener.onPlayerConnect(player);
-                sendToAllPlayers(new Packet(MessageType.PLAYER_JOINED, String.valueOf(player.getID())));
                 playerThreads.put(player, thread);
+                players.add(player);
+                listener.onPlayerConnect(player);
+                sendToAllExcept(player, new Packet(MessageType.PLAYER_JOINED, String.valueOf(player.getID())));
                 sendToPlayer(player, new Packet(MessageType.CONNECTED, String.valueOf(player.getID())));
                 sendToPlayer(player, new Packet(MessageType.PLAYER_INFO, player));
                 thread.start();
@@ -205,8 +205,6 @@ public class NetworkServer implements Runnable {
     private boolean setupConnection() {
         try {
             serverSocket = new ServerSocket(port);
-            //TODO remove?
-            System.out.println("GameProtocol Network Thread started!");
             return true;
         } catch (IOException e) {
             e.printStackTrace();
