@@ -38,6 +38,7 @@ public class ServerInteractions {
         if (core.getWaitingForInput()) {
             if (message.startsWith("wild#")) {
                 Color c = Color.valueOf(message.split("#")[1]);
+                GameServer.logger.info("Received wild color picked: " + c);
                 core.wild(c);
                 sendNextTurn();
             }
@@ -52,12 +53,12 @@ public class ServerInteractions {
             if (message.startsWith("play#")) {
                 String[] s = message.split("#");
                 Card card = new Card(Color.valueOf(s[2].toUpperCase()), Type.valueOf(s[1].toUpperCase()), Integer.parseInt(s[3]));
+                GameServer.logger.info("Player (" + player.getID() + ") is trying to play (" + card + ")");
                 ArrayList<Card> cards = core.getPlayers().get(core.getCurrentPlayerIndex()).getCards();
                 for (Card c: cards) {
                     if (c.equals(card)) {
                         core.executeCard(c);
-                        System.out.println("executed card " + c);
-                        System.out.println("Waiting: " + core.getWaitingForInput());
+                        GameServer.logger.info("Executed card " + c);
                         if (!core.getWaitingForInput() && !core.getWinCondition())
                             sendNextTurn();
                         if (core.getWinCondition()) {
@@ -70,9 +71,18 @@ public class ServerInteractions {
                     }
                 }
             } else if (message.equals("draw-card")) {
+                Card oldCard = core.getDeck().getPlayedCards().get(0);
                 core.getPlayers().get(core.getCurrentPlayerIndex()).endDraw();
+                Card newCard = core.getDeck().getPlayedCards().get(0);
+                if (oldCard.equals(newCard)) {
+                    ArrayList<Card> cards = core.getPlayers().get(core.getCurrentPlayerIndex()).getCards();
+                    GameServer.logger.info(core.getPlayers().get(core.getCurrentPlayerIndex()).getName() + " drew a card and kept is (" + cards.get(cards.size()-1) + ")");
+                } else {
+                    GameServer.logger.info(core.getPlayers().get(core.getCurrentPlayerIndex()).getName() + " drew a card and played is (" + newCard + ")");
+                }
                 sendNextTurn();
             } else if (message.equals("uno")) {
+                GameServer.logger.info(core.getPlayers().get(core.getCurrentPlayerIndex()).getName() + " said uno");
                 core.getPlayers().get(core.getCurrentPlayerIndex()).setUno(true);
             }
         }

@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="UNO" />
     <orderEntry type="module" module-name="network" />
+    <orderEntry type="library" name="Log4J 2.8.1" level="project" />
   </component>
 </module>

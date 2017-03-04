@@ -4,10 +4,7 @@ import uno.network.api.MessageType;
 import uno.network.api.Packet;
 import uno.network.api.Player;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -37,8 +34,8 @@ public class PlayerThread extends Thread {
             this.out = new ObjectOutputStream(socket.getOutputStream());
             this.in = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
-            e.printStackTrace();
-            running = false;
+            NetworkServer.logger.error("Bad connection (" + player.getAddress() + ":" + socket.getPort() + ")(not using proper client?), aborting connection", e);
+            closeConnection();
         }
     }
 
@@ -57,7 +54,7 @@ public class PlayerThread extends Thread {
                     server.playerLeft(player, false);
                 closeConnection();
             } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                NetworkServer.logger.error(e, e);
             }
 
             if (o instanceof Packet) {
@@ -75,7 +72,7 @@ public class PlayerThread extends Thread {
             try {
                 socket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                NetworkServer.logger.error(e, e);
             }
     }
 
@@ -93,13 +90,19 @@ public class PlayerThread extends Thread {
     private void closeConnection() {
         running = false;
         try {
-            if (in != null)
+            if (in != null) {
                 in.close();
-            if (out != null)
+                in = null;
+            }
+            if (out != null) {
                 out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                out = null;
+            }
+            if (socket != null) {
+                socket.close();
+                socket = null;
+            }
+        } catch (IOException ignored) {}
     }
 
     /**
@@ -107,13 +110,18 @@ public class PlayerThread extends Thread {
      * @param packet The packet to be sent
      */
     public void sendMessage(Packet packet) {
-        if (socket.isConnected() && out != null) {
+        if (running && socket.isConnected() && out != null) {
             try {
                 out.writeObject(packet);
             } catch (IOException e) {
-                e.printStackTrace();
+                NetworkServer.logger.error(e, e);
+                server.playerLeft(player, false);
+                closeConnection();
             }
         }
     }
 
+    public boolean isRunning() {
+        return running;
+    }
 }

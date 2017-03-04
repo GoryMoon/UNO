@@ -72,6 +72,7 @@ public class Main implements IClientMessageListener {
             }
 
             if (o.equals("game-over")) {
+                networkClient.disconnect();
                 setScreen(ScreenInstances.getGameFinished());
             }
         }

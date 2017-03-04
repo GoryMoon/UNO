@@ -26,6 +26,7 @@ public class PauseOverlay {
         JButton quitButton = new JButton("Quit game");
         quitButton.addActionListener(e -> {
             main.setScreen(ScreenInstances.getMainMenu());
+            main.networkClient.disconnect();
             close();
         });
 

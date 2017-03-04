@@ -1,5 +1,7 @@
 package uno.server.core;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import uno.logic.GameCore;
 import uno.network.api.IServerMessageListener;
 import uno.network.api.MessageType;
@@ -27,6 +29,10 @@ public class GameServer implements IServerMessageListener {
     private int port;
     private int maxPlayers;
 
+    private static final Object obj = new Object();
+
+    public static Logger logger = LogManager.getLogger("UnoServer");
+
     public GameServer() {
         this(55333, 4);
     }
@@ -38,6 +44,8 @@ public class GameServer implements IServerMessageListener {
         this.port = port;
         this.maxPlayers = maxPlayers;
         names = new ArrayList<>(maxPlayers);
+        logger.info("Starting Uno Server");
+
         startNetwork();
     }
 
@@ -54,6 +62,7 @@ public class GameServer implements IServerMessageListener {
                 out.writeObject(new Packet(MessageType.ERROR_RUNNING, "Game already running"));
                 out.close();
             } catch (IOException e) {
+                logger.error(e, e);
                 e.printStackTrace();
             }
 
@@ -66,12 +75,12 @@ public class GameServer implements IServerMessageListener {
     @Override
     public void onPlayerConnect(Player player) {
         if (hostPlayer == null) {
-            System.out.println("Started new game lobby!");
+            logger.info("Started new game lobby!");
             hostPlayer = player;
         }
         currentPlayerCount++;
         sendToAllPlayers("currentplayer#" + currentPlayerCount);
-        System.out.println("Player connected: " + player.getAddress() + ": " + player.getID() + " #" + currentPlayerCount);
+        logger.info("Player connected: " + player.getAddress() + ": " + player.getID() + " #" + currentPlayerCount);
     }
 
     @Override
@@ -79,14 +88,14 @@ public class GameServer implements IServerMessageListener {
         if (player == hostPlayer || currentPlayerCount-1 < 2) {
             networkServer.stop();
             startNetwork();
-            System.out.println("Stopped game!");
+            logger.info("Stopped game!");
             currentPlayerCount = 0;
             core = null;
             hostPlayer = null;
         } else {
             currentPlayerCount--;
         }
-        System.out.println("Player disconnected: " + player.getAddress() + ": " + player.getID() + " #" + currentPlayerCount);
+        logger.info("Player disconnected: " + player.getAddress() + ": " + player.getID() + " #" + currentPlayerCount);
     }
 
     @Override
@@ -101,7 +110,7 @@ public class GameServer implements IServerMessageListener {
                 core.setupGame(currentPlayerCount, networkServer.getPlayerUUIDs());
                 sendToAllPlayers("game-started");
                 interactions = new ServerInteractions(this, core, networkServer);
-                System.out.println("Game Started");
+                logger.info("Game Started");
             }
         } else {
             if (core != null && interactions != null) {

@@ -1,5 +1,7 @@
 package uno.network.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import uno.network.api.IServerMessageListener;
 import uno.network.api.MessageType;
 import uno.network.api.Packet;
@@ -32,6 +34,8 @@ public class NetworkServer implements Runnable {
     private ServerSocket serverSocket;
     private Socket socket = null;
 
+    public static Logger logger = LogManager.getLogger("NetworkServer");
+
     /**
      * Setups the network server
      * @param listener The listener that should get the events
@@ -44,7 +48,7 @@ public class NetworkServer implements Runnable {
         this.maxPlayers = maxPlayers;
         this.playerThreads = new HashMap<>();
         this.players = new ArrayList<>();
-        this.mainNetworkThread = new Thread(this, "GameProtocol Network Thread");
+        this.mainNetworkThread = new Thread(this, "Uno Network Thread");
     }
 
     /**
@@ -52,6 +56,7 @@ public class NetworkServer implements Runnable {
      */
     public void start() {
         running = true;
+        logger.debug("Uno Network Thread Started");
         mainNetworkThread.start();
     }
 
@@ -59,12 +64,13 @@ public class NetworkServer implements Runnable {
      * Stops the network, stops listening for new players and disconnects all the currently connected players
      */
     public void stop() {
+        logger.debug("Uno Network Thread Stopped");
         running = false;
         try {
             if (serverSocket != null)
                 serverSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e, e);
         }
         for (Map.Entry<Player, PlayerThread> entry: playerThreads.entrySet())
             entry.getValue().disconnectPlayer();
@@ -119,7 +125,7 @@ public class NetworkServer implements Runnable {
         if (playerThreads.containsKey(player))
             playerThreads.get(player).sendMessage(packet);
         else
-            System.out.println("Player isn't connected");
+            logger.warn("Player isn't connected");
     }
 
     /**
@@ -149,7 +155,7 @@ public class NetworkServer implements Runnable {
                 running = false;
                 break;
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e, e);
                 running = false;
             }
             if (playerThreads.size() < maxPlayers) {
@@ -157,7 +163,7 @@ public class NetworkServer implements Runnable {
                     try {
                         socket.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        logger.error("Error with closing socket", e);
                     }
                     socket = null;
                     continue;
@@ -165,6 +171,8 @@ public class NetworkServer implements Runnable {
                 UUID uuid = UUID.randomUUID();
                 Player player = new Player(socket.getInetAddress(), uuid);
                 PlayerThread thread = new PlayerThread(this, socket, player);
+                if (!thread.isRunning())
+                    continue;
                 playerThreads.put(player, thread);
                 players.add(player);
                 listener.onPlayerConnect(player);
@@ -176,11 +184,12 @@ public class NetworkServer implements Runnable {
                 try {
                     ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                     out.writeObject(new Packet(MessageType.ERROR_FULL, "Game is full"));
+                    logger.debug("Player tried to log on to a full server");
                     out.close();
                     socket.close();
                     socket = null;
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error(e, e);
                 }
             }
         }
@@ -207,7 +216,7 @@ public class NetworkServer implements Runnable {
             serverSocket = new ServerSocket(port);
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Could not setup connection for server", e);
             return false;
         }
     }
