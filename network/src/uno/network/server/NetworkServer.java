@@ -77,6 +77,19 @@ public class NetworkServer implements Runnable {
     }
 
     /**
+     * Resets the server network back to when started
+     */
+    public void reset() {
+        for (Map.Entry<Player, PlayerThread> entry: playerThreads.entrySet())
+            entry.getValue().disconnectPlayer();
+        players.clear();
+        playerThreads.clear();
+        players = new ArrayList<>();
+        playerThreads = new HashMap<>();
+        logger.info("Resetting the network");
+    }
+
+    /**
      * Gets the player from provided UUID
      * @param uuid The UUID of the player that want's to be retrieved
      * @return If a player for the UUID exist that player if returned else null

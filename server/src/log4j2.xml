@@ -6,7 +6,7 @@
         </Console>
         <RollingRandomAccessFile name="File" fileName="logs/latest.log" filePattern="logs/uno-server-%i.log">
             <PatternLayout pattern="[%d{HH:mm:ss}] [%t/%level] [%logger]: %msg%n" />
-            <DefaultRolloverStrategy max="4" />
+            <DefaultRolloverStrategy min="1" max="4" fileIndex="min" />
             <Policies>
                 <OnStartupTriggeringPolicy />
                 <SizeBasedTriggeringPolicy size="2 MB"/>

@@ -27,6 +27,7 @@ public class PlayerThread extends Thread {
      * @param player The player object that is associated to this thread
      */
     public PlayerThread(NetworkServer networkServer, Socket socket, Player player) {
+        super("");
         this.server = networkServer;
         this.socket = socket;
         this.player = player;

@@ -71,9 +71,8 @@ public class GameLobby implements IScreen {
         }
 
         if (players != null)
-            players.setText("current players: " + count);
-        else
-            currentPlayers = count;
+            players.setText("Current players: " + count);
+        currentPlayers = count;
 
         if (frame != null)
             frame.pack();

@@ -74,28 +74,24 @@ public class GameServer implements IServerMessageListener {
 
     @Override
     public void onPlayerConnect(Player player) {
+        logger.info("Player connected: " + player.getAddress() + ": " + player.getID() + " #" + ++currentPlayerCount);
         if (hostPlayer == null) {
             logger.info("Started new game lobby!");
             hostPlayer = player;
         }
-        currentPlayerCount++;
         sendToAllPlayers("currentplayer#" + currentPlayerCount);
-        logger.info("Player connected: " + player.getAddress() + ": " + player.getID() + " #" + currentPlayerCount);
     }
 
     @Override
     public void onPlayerDisconnect(Player player, boolean expected) {
-        if (player == hostPlayer || currentPlayerCount-1 < 2) {
-            networkServer.stop();
-            startNetwork();
-            logger.info("Stopped game!");
+        logger.info("Player disconnected: " + player.getAddress() + ": " + player.getID() + " #" + --currentPlayerCount);
+        if (player == hostPlayer || currentPlayerCount < 2) {
+            hostPlayer = null;
+            logger.info("Stopping game!");
+            networkServer.reset();
             currentPlayerCount = 0;
             core = null;
-            hostPlayer = null;
-        } else {
-            currentPlayerCount--;
         }
-        logger.info("Player disconnected: " + player.getAddress() + ": " + player.getID() + " #" + currentPlayerCount);
     }
 
     @Override
@@ -105,7 +101,7 @@ public class GameServer implements IServerMessageListener {
                 interactions.handleMessage(player, (String) data);
             }
 
-            if (data.equals("start-game") && core == null && currentPlayerCount >= 1) {
+            if (data.equals("start-game") && core == null && currentPlayerCount >= 2) {
                 core = new GameCore(this);
                 core.setupGame(currentPlayerCount, networkServer.getPlayerUUIDs());
                 sendToAllPlayers("game-started");

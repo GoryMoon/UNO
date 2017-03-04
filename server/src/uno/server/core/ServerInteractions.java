@@ -82,8 +82,13 @@ public class ServerInteractions {
                 }
                 sendNextTurn();
             } else if (message.equals("uno")) {
-                GameServer.logger.info(core.getPlayers().get(core.getCurrentPlayerIndex()).getName() + " said uno");
-                core.getPlayers().get(core.getCurrentPlayerIndex()).setUno(true);
+                if (player.getID().equals(core.getPlayers().get(core.getCurrentPlayerIndex()).getUuid())) {
+                    GameServer.logger.info(core.getPlayers().get(core.getCurrentPlayerIndex()).getName() + " said uno");
+                    core.getPlayers().get(core.getCurrentPlayerIndex()).setUno(true);
+                    ArrayList<Pair<UUID, Pair<String, Boolean>>> names = new ArrayList<>();
+                    core.getPlayers().forEach(player1 -> names.add(new Pair<>(player1.getUuid(), new Pair<>(player1.getName(), player1.unoStatus()))));
+                    server.sendToAllPlayers(names);
+                }
             }
         }
     }
