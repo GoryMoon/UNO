@@ -72,7 +72,6 @@ public class Main implements IClientMessageListener {
             }
 
             if (o.equals("game-over")) {
-                networkClient.disconnect();
                 setScreen(ScreenInstances.getGameFinished());
             }
         }
@@ -80,6 +79,7 @@ public class Main implements IClientMessageListener {
         if (o instanceof Pair) {
             if (((Pair) o).getKey().equals("win-list")) {
                 ScreenInstances.getGameFinished().setWinList((ArrayList<Pair<String, Integer>>) ((Pair) o).getValue());
+                networkClient.disconnect();
             }
         }
 
