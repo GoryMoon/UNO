@@ -3,7 +3,7 @@ package uno.server;
 import uno.server.core.GameServer;
 
 /**
- * The launcher for the server</br>
+ * The launcher for the server<br>
  * Responsible for handling all the parameters to start the server
  */
 public class GameLauncher {

@@ -14,8 +14,8 @@ import java.net.SocketException;
 import java.util.Random;
 
 /**
- * The network handler for the client side<br/>
- * Establishes the connection the server and handles the messages received from the server<br/>
+ * The network handler for the client side<br>
+ * Establishes the connection the server and handles the messages received from the server<br>
  * Uses a listener for the events that happens
  */
 public class NetworkClient implements Runnable {
@@ -106,7 +106,7 @@ public class NetworkClient implements Runnable {
     }
 
     /**
-     * The threads' run implementation<br/>
+     * The threads' run implementation<br>
      * Tries to connect to the server and handles the messages received from it
      */
     @Override

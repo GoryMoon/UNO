@@ -8,9 +8,11 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * Not planned but wanted a quick media player, used this<br/>
- * Modified to work for us, changed file input and looping
- * @author dberm22, https://github.com/dberm22/DBoard/blob/master/src/com/dberm22/utils/MediaPlayer.java
+ * Not planned but wanted a quick media player, used this<br>
+ * Modified to work for us, changed file input and looping<br>
+ * Copied from <a href="https://github.com/dberm22/DBoard/blob/master/src/com/dberm22/utils/MediaPlayer.java">https://github.com/dberm22/DBoard/blob/master/src/com/dberm22/utils/MediaPlayer.java</a>
+ *
+ * @author dberm22
  */
 public class MediaPlayer implements Runnable{
 
@@ -37,10 +39,9 @@ public class MediaPlayer implements Runnable{
     /**
      * @throws IOException
      * @throws UnsupportedAudioFileException
-     * @throws FileNotFoundException
      * @throws LineUnavailableException
      */
-    public void playSound() throws FileNotFoundException, UnsupportedAudioFileException, IOException, LineUnavailableException
+    public void playSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException
     {
         isPlayingFlag = true;
 

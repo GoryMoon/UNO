@@ -23,6 +23,12 @@ public class ServerInteractions {
     private GameCore core;
     private NetworkServer network;
 
+    /**
+     * Setups a new interaction to the server
+     * @param gameServer The GameServer that is running this
+     * @param core The core that is running for this
+     * @param networkServer The network that's running for this
+     */
     public ServerInteractions(GameServer gameServer, GameCore core, NetworkServer networkServer) {
         this.server = gameServer;
         this.core = core;
@@ -32,7 +38,8 @@ public class ServerInteractions {
 
     /**
      * Handles string messages received from the client
-     * @param message
+     * @param player The players that sent the message
+     * @param message The message received
      */
     public void handleMessage(Player player, String message) {
         if (core.getWaitingForInput()) {
@@ -76,9 +83,9 @@ public class ServerInteractions {
                 Card newCard = core.getDeck().getPlayedCards().get(0);
                 if (oldCard.equals(newCard)) {
                     ArrayList<Card> cards = core.getPlayers().get(core.getCurrentPlayerIndex()).getCards();
-                    GameServer.logger.info(core.getPlayers().get(core.getCurrentPlayerIndex()).getName() + " drew a card and kept is (" + cards.get(cards.size()-1) + ")");
+                    GameServer.logger.info(core.getPlayers().get(core.getCurrentPlayerIndex()).getName() + " drew a card and kept it (" + cards.get(cards.size()-1) + ")");
                 } else {
-                    GameServer.logger.info(core.getPlayers().get(core.getCurrentPlayerIndex()).getName() + " drew a card and played is (" + newCard + ")");
+                    GameServer.logger.info(core.getPlayers().get(core.getCurrentPlayerIndex()).getName() + " drew a card and played it (" + newCard + ")");
                 }
                 sendNextTurn();
             } else if (message.equals("uno")) {
@@ -94,13 +101,8 @@ public class ServerInteractions {
     }
 
     /**
-     * Handles object messages received from the client
-     * @param message
+     * Send data for a new turn
      */
-    public void handleMessage(Object message) {
-
-    }
-
     private void sendNextTurn() {
         ArrayList<uno.logic.Player> players = core.getPlayers();
         ArrayList<Pair<UUID, Pair<String, Boolean>>> names = new ArrayList<>();
@@ -117,6 +119,7 @@ public class ServerInteractions {
             ArrayList<String> cards = new ArrayList<>();
             p2.getCards().forEach(card -> cards.add(cardToString(card)));
             server.sendToPlayer(p2.getUuid(), cards);
+            GameServer.logger.info("Sending cards to " + p2.getName() + ":" + cards);
         }
 
         Card topCard = core.getDeck().getPlayedCards().get(0);
@@ -125,12 +128,17 @@ public class ServerInteractions {
         server.sendToAllPlayers(new Pair<>("new-round", p.getUuid()));
     }
 
+    /**
+     * Converts a {@link Card} to a string to send over the network
+     * @param card The card to convert
+     * @return A string representation of the card
+     */
     private String cardToString(Card card) {
         return card.getType().toString().toLowerCase() + "#" + card.getColor().toString().toLowerCase() + "#" + card.getNumber();
     }
 
     /**
-     * Use the one in GameServer instead<br/><br/>
+     * Use the one in GameServer instead<br><br>
      * Used to request an input from the player
      * @param uuid The UUID of the player that the request is for
      * @param requestType String of what's requested, the message is an collaboration between the server and client

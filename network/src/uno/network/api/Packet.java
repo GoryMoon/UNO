@@ -3,8 +3,8 @@ package uno.network.api;
 import java.io.Serializable;
 
 /**
- * The object that is sent between the server and client<br/>
- * Holds information about the data that is sent<br/>
+ * The object that is sent between the server and client<br>
+ * Holds information about the data that is sent<br>
  */
 public class Packet implements Serializable {
 

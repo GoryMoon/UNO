@@ -3,7 +3,7 @@ package uno.network.api;
 import java.io.Serializable;
 
 /**
- * The different types of messages that are sent<br/>
+ * The different types of messages that are sent<br>
  * Most of them are only used internally and never seen anywhere else
  */
 public enum MessageType implements Serializable {

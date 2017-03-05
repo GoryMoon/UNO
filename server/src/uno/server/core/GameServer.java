@@ -29,16 +29,21 @@ public class GameServer implements IServerMessageListener {
     private int port;
     private int maxPlayers;
 
-    private static final Object obj = new Object();
-
     public static Logger logger = LogManager.getLogger("UnoServer");
 
+    /**
+     * Starts server with default settings<p>
+     * Port: 55333<p>
+     * MaxPlayers: 4
+     */
     public GameServer() {
         this(55333, 4);
     }
 
     /**
      * Setups the server depending on the parameters put in
+     * @param port The port to listen to
+     * @param maxPlayers The max amount players
      */
     public GameServer(int port, int maxPlayers) {
         this.port = port;
@@ -108,10 +113,6 @@ public class GameServer implements IServerMessageListener {
                 interactions = new ServerInteractions(this, core, networkServer);
                 logger.info("Game Started");
             }
-        } else {
-            if (core != null && interactions != null) {
-                interactions.handleMessage(data);
-            }
         }
     }
 
@@ -153,6 +154,7 @@ public class GameServer implements IServerMessageListener {
      * @param requestType String of what's requested, the message is an collaboration between the server and client
      */
     public void requestInputFromPlayer(UUID uuid, String requestType) {
+        logger.info("Requesting input from " + uuid.toString() + " with type: " + requestType);
         networkServer.sendToPlayer(networkServer.getPlayerFromUUID(uuid), new Packet(MessageType.MESSAGE, "request#" + requestType));
     }
 }

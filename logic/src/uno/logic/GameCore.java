@@ -14,7 +14,7 @@ import java.util.UUID;
  * <p>
  * Also keeps track on whose turn it is and who the next player is depending on the direction of the turn order (clockwise/counterclockwise)
  * 
- * @author Daniel Ryd�n & Fressia Moreno
+ * @author Daniel Rydén &amp; Fressia Moreno
  * @version 2017-03-03
  */
 
@@ -118,11 +118,11 @@ public class GameCore {
 					break;
 				case WILD:
 					waitingForInput = true;
-					gameServer.getInteractions().requestInputFromPlayer(players.get(currentPlayerIndex).getUuid(), "wild");
+					gameServer.requestInputFromPlayer(players.get(currentPlayerIndex).getUuid(), "wild");
 					break;
 				case WILD_DRAW:
 					waitingForInput = true;
-					gameServer.getInteractions().requestInputFromPlayer(players.get(currentPlayerIndex).getUuid(), "wild");
+					gameServer.requestInputFromPlayer(players.get(currentPlayerIndex).getUuid(), "wild");
 					drawEffect(4);
 					break;
 			}

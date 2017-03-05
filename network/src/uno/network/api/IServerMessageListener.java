@@ -21,8 +21,8 @@ public interface IServerMessageListener {
     void onPlayerConnect(Player player);
 
     /**
-     * Called when a player is disconnected for any reason<br/>
-     * If the disconnect was unexpected the player could have crashed or lost the connection<br/>
+     * Called when a player is disconnected for any reason<br>
+     * If the disconnect was unexpected the player could have crashed or lost the connection<br>
      * An expected disconnect only happens if the player sends a message about it beforehand
      * @param player The player that was disconnected
      * @param expected If the disconnect was expected or not

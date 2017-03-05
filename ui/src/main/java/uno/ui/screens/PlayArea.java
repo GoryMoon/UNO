@@ -10,6 +10,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.UUID;
 
 
@@ -119,7 +121,7 @@ public class PlayArea implements IScreen {
     }
 
     private void setTurnText() {
-        turnInfo.setText("Current turnInfo is: " + (currentTurn ? "You": getPlayer(currentPlayer).getValue().getKey()));
+        turnInfo.setText("Current turn is: " + (currentTurn ? "You": getPlayer(currentPlayer).getValue().getKey()));
         frame.pack();
     }
 

@@ -7,7 +7,7 @@ import java.util.UUID;
  * <p>
  * This class can also draw cards for the player and put it in their hand
  * 
- * @author Daniel Ryd�n & Fressia Moreno
+ * @author Daniel Rydén &amp; Fressia Moreno
  * @version 2017-03-03
  */
 
@@ -53,7 +53,7 @@ public class Player {
 	}
 	
 	/**
-	 * When out of options the player can choose to draw a card instead,<br/>
+	 * When out of options the player can choose to draw a card instead,<br>
 	 * If the card is playable it is immediately played. After either case the turn ends.
 	 */
 	public void endDraw() {

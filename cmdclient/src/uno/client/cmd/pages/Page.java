@@ -11,7 +11,7 @@ public abstract class Page {
     public boolean running = true;
 
     /**
-     * Runs the page<br/>
+     * Runs the page<br>
      * Prints message and takes an input if wanted and handles it
      * @param client The client that shows the page
      */
@@ -51,8 +51,8 @@ public abstract class Page {
     public void handleMessage(Object o) {}
 
     /**
-     *
-     * @param client
+     * Setup help method
+     * @param client The client
      */
     public void setup(GameClient client) {}
 

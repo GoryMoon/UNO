@@ -11,7 +11,6 @@ import static org.junit.Assert.assertTrue;
 /**
  * 
  * @author nakhle
- * @version
  */
 public class PlayerTest {
 

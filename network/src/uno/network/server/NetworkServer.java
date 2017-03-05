@@ -15,10 +15,10 @@ import java.net.SocketException;
 import java.util.*;
 
 /**
- * The network handler for the server side<br/><br/>
- * Accepts connections from clients and saves them in separate threads<br/>
- * Takes a max amount of players, if it's full new players are ignored and receives a message that it's full<br/>
- * Handles all the connects and disconnects and if it's an expected disconnect or not<br/>
+ * The network handler for the server side<br><br>
+ * Accepts connections from clients and saves them in separate threads<br>
+ * Takes a max amount of players, if it's full new players are ignored and receives a message that it's full<br>
+ * Handles all the connects and disconnects and if it's an expected disconnect or not<br>
  * Uses a listener for the events that happens
  */
 public class NetworkServer implements Runnable {
@@ -138,7 +138,7 @@ public class NetworkServer implements Runnable {
         if (playerThreads.containsKey(player))
             playerThreads.get(player).sendMessage(packet);
         else
-            logger.warn("Player isn't connected");
+            logger.warn("Player isn't connected: " + player.getAddress() + ":" + player.getID());
     }
 
     /**
@@ -151,7 +151,7 @@ public class NetworkServer implements Runnable {
     }
 
     /**
-     * The threads' run implementation<br/>
+     * The threads' run implementation<br>
      * Does all the heavy work with listening for new players and connecting them
      */
     @Override
