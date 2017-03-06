@@ -6,6 +6,8 @@ import java.util.UUID;
 
 /**
  * The player object that is used to keep track of each player thread
+ * @author Gustaf Järgren
+ * @version 06-03-2017
  */
 public class Player implements Serializable {
 

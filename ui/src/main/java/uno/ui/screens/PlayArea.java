@@ -1,6 +1,6 @@
 package uno.ui.screens;
 
-import javafx.util.Pair;
+import uno.network.api.Pair;
 import uno.ui.Card;
 import uno.ui.Main;
 import uno.ui.PauseOverlay;
@@ -10,8 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.TreeMap;
 import java.util.UUID;
 
 
@@ -139,6 +137,7 @@ public class PlayArea implements IScreen {
     }
 
     public void handleMessage(Object o) {
+        System.out.println(o);
         if (o instanceof ArrayList) {
             if (((ArrayList) o).get(0) instanceof Pair) {
                 if (((Pair) ((ArrayList) o).get(0)).getValue() instanceof Pair)

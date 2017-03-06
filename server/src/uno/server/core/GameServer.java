@@ -17,6 +17,8 @@ import java.util.UUID;
 
 /**
  * The core class for the server, starts and handles everything
+ * @author Gustaf Järgren
+ * @version 06-03-2017
  */
 public class GameServer implements IServerMessageListener {
 

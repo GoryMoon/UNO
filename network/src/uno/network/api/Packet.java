@@ -5,6 +5,8 @@ import java.io.Serializable;
 /**
  * The object that is sent between the server and client<br>
  * Holds information about the data that is sent<br>
+ * @author Gustaf Järgren
+ * @version 06-03-2017
  */
 public class Packet implements Serializable {
 

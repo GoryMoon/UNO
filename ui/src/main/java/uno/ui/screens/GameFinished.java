@@ -1,6 +1,6 @@
 package uno.ui.screens;
 
-import javafx.util.Pair;
+import uno.network.api.Pair;
 import uno.ui.Main;
 
 import javax.swing.*;

@@ -1,21 +1,20 @@
 package uno.server.core;
 
-import javafx.util.Pair;
 import uno.logic.Card;
 import uno.logic.Color;
 import uno.logic.GameCore;
 import uno.logic.Type;
-import uno.network.api.MessageType;
-import uno.network.api.Packet;
+import uno.network.api.Pair;
 import uno.network.api.Player;
 import uno.network.server.NetworkServer;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.UUID;
 
 /**
  * The bridge between the network and the logic
+ * @author Gustaf Järgren
+ * @version 06-03-2017
  */
 public class ServerInteractions {
 

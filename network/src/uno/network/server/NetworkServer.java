@@ -20,6 +20,8 @@ import java.util.*;
  * Takes a max amount of players, if it's full new players are ignored and receives a message that it's full<br>
  * Handles all the connects and disconnects and if it's an expected disconnect or not<br>
  * Uses a listener for the events that happens
+ * @author Gustaf Järgren
+ * @version 06-03-2017
  */
 public class NetworkServer implements Runnable {
 

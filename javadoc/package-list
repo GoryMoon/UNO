@@ -1,0 +1,14 @@
+uno.client
+uno.client.cmd
+uno.client.cmd.pages
+uno.client.cmd.sound
+uno.logic
+uno.network
+uno.network.api
+uno.network.client
+uno.network.server
+uno.server
+uno.server.core
+uno.ui
+uno.ui.screens
+uno.ui.sound

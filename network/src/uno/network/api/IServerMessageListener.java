@@ -4,6 +4,8 @@ import java.net.Socket;
 
 /**
  * The listener interface for receiving events from the network thread
+ * @author Gustaf Järgren
+ * @version 06-03-2017
  */
 public interface IServerMessageListener {
 

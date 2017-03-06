@@ -1,9 +1,9 @@
 package uno.ui;
 
-import javafx.util.Pair;
 import uno.network.api.IClientMessageListener;
 import uno.network.api.MessageType;
 import uno.network.api.Packet;
+import uno.network.api.Pair;
 import uno.network.client.NetworkClient;
 import uno.ui.screens.ErrorScreen;
 import uno.ui.screens.IScreen;

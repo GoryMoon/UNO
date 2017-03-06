@@ -17,6 +17,8 @@ import java.util.Random;
  * The network handler for the client side<br>
  * Establishes the connection the server and handles the messages received from the server<br>
  * Uses a listener for the events that happens
+ * @author Gustaf Järgren
+ * @version 06-03-2017
  */
 public class NetworkClient implements Runnable {
 

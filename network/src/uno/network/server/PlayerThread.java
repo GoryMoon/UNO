@@ -4,12 +4,17 @@ import uno.network.api.MessageType;
 import uno.network.api.Packet;
 import uno.network.api.Player;
 
-import java.io.*;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
 /**
  * The thread responsible for communications between a client and the server
+ * @author Gustaf Järgren
+ * @version 06-03-2017
  */
 public class PlayerThread extends Thread {
 

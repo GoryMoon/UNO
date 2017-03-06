@@ -7,6 +7,9 @@ import uno.network.client.NetworkClient;
 
 import java.util.Scanner;
 
+/**
+ * A test client for the network, not used in the game
+ */
 public class TestClient implements IClientMessageListener {
 
     private Scanner scanner;

@@ -9,6 +9,9 @@ import uno.network.server.NetworkServer;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * A test server for the network, not used in the game
+ */
 public class TestServer implements IServerMessageListener {
 
     private NetworkServer networkServer;
