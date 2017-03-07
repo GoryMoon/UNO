@@ -3,7 +3,7 @@ package uno.logic;
 /**
  * This class keeps track of all the information about the cards, such as color, type and number.
  * 
- * @author Daniel Rydén &amp; Fressia Moreno
+ * @author Daniel Rydén &amp; Fressia Merino
  * @version 2017-03-03
  */
 

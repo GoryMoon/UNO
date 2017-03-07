@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * <p>
  * In this class is also where you draw cards.
  * 
- * @author Daniel Rydén &amp; Fressia Moreno
+ * @author Daniel Rydén &amp; Fressia Merino
  * @version 2017-03-03
  */
 public class Deck {

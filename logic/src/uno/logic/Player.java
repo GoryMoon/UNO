@@ -7,7 +7,7 @@ import java.util.UUID;
  * <p>
  * This class can also draw cards for the player and put it in their hand
  * 
- * @author Daniel Rydén &amp; Fressia Moreno
+ * @author Daniel Rydén &amp; Fressia Merino
  * @version 2017-03-03
  */
 

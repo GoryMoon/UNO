@@ -14,7 +14,7 @@ import java.util.UUID;
  * <p>
  * Also keeps track on whose turn it is and who the next player is depending on the direction of the turn order (clockwise/counterclockwise)
  * 
- * @author Daniel Rydén &amp; Fressia Moreno
+ * @author Daniel Rydén &amp; Fressia Merino
  * @version 2017-03-03
  */
 
@@ -113,6 +113,7 @@ public class GameCore {
 					break;
 				case REVERSE:
 					reverseEffect();
+					break;
 				case SKIP:
 					skipEffect();
 					break;
