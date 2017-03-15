@@ -8,10 +8,8 @@ import java.util.HashMap;
 import java.util.UUID;
 
 /**
- * This class initializes the game by creating a deck, all the players who shall play the game and draws the first card
- * <p>
- * When a player chooses a card to play this class makes sure it gets played and also keeps track of all special effects the cards may have
- * <p>
+ * This class initializes the game by creating a deck, all the players who shall play the game and draws the first card<br>
+ * When a player chooses a card to play this class makes sure it gets played and also keeps track of all special effects the cards may have<br>
  * Also keeps track on whose turn it is and who the next player is depending on the direction of the turn order (clockwise/counterclockwise)
  * 
  * @author Daniel Rydén &amp; Fressia Merino
@@ -45,11 +43,14 @@ public class GameCore {
 	
 	/** 
 	 * Creates a deck, the number of players who are playing and draws the first card
-	 * @param playerCount Number of players
-	 * @param uuids The collection of UUIDs that are to be assigned to the players
-	 */
-	public void setupGame(int playerCount, ArrayList<UUID> uuids) {
+     * @param playerCount Number of players
+     * @param uuids The collection of UUIDs that are to be assigned to the players
+     * @param shuffle
+     */
+	public void setupGame(int playerCount, ArrayList<UUID> uuids, boolean shuffle) {
 		deck.setupDeck();
+		if (shuffle) deck.shuffle();
+
 		for (int i = 0; i < playerCount; i++) {
 			Player player = new Player(("Player "+ (i+1)) ,deck, this, uuids.get(i));
 			player.setup();
@@ -94,8 +95,7 @@ public class GameCore {
 	}
 	
 	/**
-	 * Plays the card that the player has chosen, if the card is allowed it gets added to the playedCards collection and removed from the player's hand, else nothing happens. 
-	 * <p>
+	 * Plays the card that the player has chosen, if the card is allowed it gets added to the playedCards collection and removed from the player's hand, else nothing happens.<br>
 	 * Also checks if the card has a special effect and plays it
 	 * @param card The card object that is to be played
 	 */
@@ -128,10 +128,10 @@ public class GameCore {
 					break;
 			}
 
-			if ((players.get(currentPlayerIndex).getCards().size() == 1) && !players.get(currentPlayerIndex).unoStatus()) {
+			if ((players.get(currentPlayerIndex).getCards().size() == 1) && !players.get(currentPlayerIndex).getUnoStatus()) {
 				players.get(currentPlayerIndex).drawCard();
 				players.get(currentPlayerIndex).drawCard();
-			} else if ((players.get(currentPlayerIndex).getCards().size() != 1) && players.get(currentPlayerIndex).unoStatus()) {
+			} else if ((players.get(currentPlayerIndex).getCards().size() != 1) && players.get(currentPlayerIndex).getUnoStatus()) {
 				players.get(currentPlayerIndex).drawCard();
 				players.get(currentPlayerIndex).drawCard();
 				players.get(currentPlayerIndex).drawCard();
@@ -223,6 +223,7 @@ public class GameCore {
 	}
 	
 	/**
+     * Gets the players
 	 * @return players The players who are playing the game
 	 */
 	public ArrayList<Player> getPlayers() {
@@ -230,6 +231,7 @@ public class GameCore {
 	}
 
 	/**
+     * Gets the order the turns rotates
 	 * @return clockwise The current turn order, clockwise or counter-clockwise
 	 */
 	public boolean getTurnOrder() {
@@ -237,6 +239,7 @@ public class GameCore {
 	}
 	
 	/**
+     * Gets the skipped players
 	 * @return skippedPlayers An index about which players are skipped by skip/draw effects
 	 */
 	public HashMap<Integer, UUID> getSkippedPlayers() {
@@ -255,6 +258,7 @@ public class GameCore {
 	}
 
 	/**
+     * Gets the current players index
 	 * @return currentPlayerIndex The index which keeps track on who's turn it is
 	 */
 	public int getCurrentPlayerIndex() {
@@ -262,6 +266,7 @@ public class GameCore {
 	}
 	
 	/**
+     * Gets if the game is waiting for input
 	 * @return waitingForInput	A flag that the server checks so it knows that it shouldn't continue until it gets input from the player
 	 */
 	public boolean getWaitingForInput() {
@@ -269,6 +274,7 @@ public class GameCore {
 	}
 
 	/**
+     * Gets the deck used in the game
 	 * @return deck	Returns the deck the current game is using
 	 */
 	public Deck getDeck() {
@@ -285,6 +291,7 @@ public class GameCore {
 	}
 	
 	/**
+     * Gets if the game is won or not
 	 * @return The win condition flag 
 	 */
 	public boolean getWinCondition() {

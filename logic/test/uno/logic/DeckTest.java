@@ -7,109 +7,87 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-
+/**
+ * Tests to test methods in the Deck
+ * @author Daniel Rydén &amp; Fressia Merino
+ * @version 2017-03-03
+ */
 public class DeckTest {
+
 	private Deck deck;
 	private ArrayList<Card> cards;
-	private ArrayList<Card> playedCards;
-	
+
+    /**
+     * Setups the tests
+     */
 	@Before
 	public void setUp(){
 		deck = new Deck();
-		cards = new ArrayList<Card>();		
+		deck.setupDeck();
 	}
 
+    /**
+     * Tests if the setup of the deck works
+     */
 	@Test
 	public void setupDeck() {
-		deck.setupDeck();		
-		int index = 0;
-		cards = deck.getCards();
-			
-		for(int i = 0; i <= 9; i++){
-			assertEquals(cards.get(index++), new Card(Color.RED, Type.NUMBER, i));		
-			assertEquals(cards.get(index++), new Card(Color.YELLOW, Type.NUMBER, i));
-			assertEquals(cards.get(index++), new Card(Color.GREEN, Type.NUMBER, i));
-			assertEquals(cards.get(index++), new Card(Color.BLUE, Type.NUMBER, i));
-		}
-		for(int i = 1; i <= 9; i++){
-			assertEquals(cards.get(index++), new Card(Color.RED, Type.NUMBER, i));
-			assertEquals(cards.get(index++), new Card(Color.YELLOW, Type.NUMBER, i));
-			assertEquals(cards.get(index++), new Card(Color.GREEN, Type.NUMBER, i));
-			assertEquals(cards.get(index++), new Card(Color.BLUE, Type.NUMBER, i));
-		}
-		for(int i = 0; i <= 4; i++) {
-			assertEquals(cards.get(index++), new Card(Color.values()[i], Type.DRAW, -1));
-			assertEquals(cards.get(index++), new Card(Color.values()[i], Type.DRAW, -1));
-			assertEquals(cards.get(index++), new Card(Color.values()[i], Type.SKIP, -1));
-			assertEquals(cards.get(index++), new Card(Color.values()[i], Type.SKIP, -1));
-			assertEquals(cards.get(index++), new Card(Color.values()[i], Type.REVERSE, -1));
-			assertEquals(cards.get(index++), new Card(Color.values()[i], Type.REVERSE, -1));
-		}
-		for(int i = 0; i <= 4; i++) {
-			assertEquals(cards.get(index++), new Card(Color.BLACK, Type.WILD, -1));
-			assertEquals(cards.get(index++), new Card(Color.BLACK, Type.WILD_DRAW, -1));
-		}
-			
-		
-		
+        setUp();
+        int index = 0;
+        cards = deck.getCards();
 
+        for(int i = 0; i <= 9; i++){
+            assertEquals(new Card(Color.RED, Type.NUMBER, i), cards.get(index++));
+            assertEquals(new Card(Color.YELLOW, Type.NUMBER, i), cards.get(index++));
+            assertEquals(new Card(Color.GREEN, Type.NUMBER, i), cards.get(index++));
+            assertEquals(new Card(Color.BLUE, Type.NUMBER, i), cards.get(index++));
+        }
+        for(int i = 1; i <= 9; i++){
+            assertEquals(new Card(Color.RED, Type.NUMBER, i), cards.get(index++));
+            assertEquals(new Card(Color.YELLOW, Type.NUMBER, i), cards.get(index++));
+            assertEquals(new Card(Color.GREEN, Type.NUMBER, i), cards.get(index++));
+            assertEquals(new Card(Color.BLUE, Type.NUMBER, i), cards.get(index++));
+        }
+        for(int i = 0; i < 8; i++) {
+            assertEquals(new Card(Color.values()[i % 4], Type.DRAW, -1), cards.get(index++));
+            assertEquals(new Card(Color.values()[i % 4], Type.SKIP, -1), cards.get(index++));
+            assertEquals(new Card(Color.values()[i % 4], Type.REVERSE, -1), cards.get(index++));
+        }
+        for(int i = 0; i < 4; i++) {
+            assertEquals(new Card(Color.BLACK, Type.WILD, -1), cards.get(index++));
+            assertEquals(new Card(Color.BLACK, Type.WILD_DRAW, -1), cards.get(index++));
+        }
 	}
-	@Test
-	public void shuffle() {
-		deck = new Deck();
-		deck.setupDeck();
-		deck.shuffle();
-		cards = deck.getCards();
-		int index = 0;
-		for(int i = 0; i <= 9; i++){
-			assertNotEquals(cards.get(index++), new Card(Color.RED, Type.NUMBER, i));		
-			assertNotEquals(cards.get(index++), new Card(Color.YELLOW, Type.NUMBER, i));
-			assertNotEquals(cards.get(index++), new Card(Color.GREEN, Type.NUMBER, i));
-			assertNotEquals(cards.get(index++), new Card(Color.BLUE, Type.NUMBER, i));
-		}
-		for(int i = 1; i <= 9; i++){
-			assertNotEquals(cards.get(index++), new Card(Color.RED, Type.NUMBER, i));
-			assertNotEquals(cards.get(index++), new Card(Color.YELLOW, Type.NUMBER, i));
-			assertNotEquals(cards.get(index++), new Card(Color.GREEN, Type.NUMBER, i));
-			assertNotEquals(cards.get(index++), new Card(Color.BLUE, Type.NUMBER, i));
-		}
-		for(int i = 0; i <= 4; i++) {
-			assertNotEquals(cards.get(index++), new Card(Color.values()[i], Type.DRAW, -1));
-			assertNotEquals(cards.get(index++), new Card(Color.values()[i], Type.DRAW, -1));
-			assertNotEquals(cards.get(index++), new Card(Color.values()[i], Type.SKIP, -1));
-			assertNotEquals(cards.get(index++), new Card(Color.values()[i], Type.SKIP, -1));
-			assertNotEquals(cards.get(index++), new Card(Color.values()[i], Type.REVERSE, -1));
-			assertNotEquals(cards.get(index++), new Card(Color.values()[i], Type.REVERSE, -1));
-		}
-		for(int i = 0; i <= 4; i++) {
-			assertNotEquals(cards.get(index++), new Card(Color.BLACK, Type.WILD, -1));
-			assertNotEquals(cards.get(index++), new Card(Color.BLACK, Type.WILD_DRAW, -1));
-		}
-		
-	}
-	
-	
+
+    /**
+     * Tests if the draw method works in the deck
+     */
 	@Test
 	public void draw() {
-		Card temp;
-		deck.setupDeck();
-		temp = deck.draw();
-		cards = deck.getCards();
-		assertEquals(temp, new Card(Color.RED, Type.NUMBER, 0));
-		assertEquals(cards.get(0), new Card(Color.YELLOW, Type.NUMBER, 0));
-		
+        setUp();
+        Card temp;
+        temp = deck.draw();
+        cards = deck.getCards();
+        assertEquals(temp, new Card(Color.RED, Type.NUMBER, 0));
+        assertEquals(cards.get(0), new Card(Color.YELLOW, Type.NUMBER, 0));
 	}
-	
+
+    /**
+     * Tests if the draw works if the deck gets empty
+     */
 	@Test
 	public void drawEmpty() {
-		cards = deck.getCards();
-		playedCards = deck.getPlayedCards();
-		cards.add(new Card(Color.RED, Type.SKIP, -1));
-		playedCards.add(new Card(Color.BLACK, Type.REVERSE, 3));
-		deck.draw();
-		assertEquals(cards.get(0), new Card(Color.BLACK, Type.REVERSE, 3));
-		assertTrue(playedCards.isEmpty()); 
-		
+        setUp();
+        Card tmp = deck.draw();
+        deck.getPlayedCards().addAll(deck.getCards());
+        deck.getCards().clear();
+        deck.getCards().add(tmp);
+
+        assertEquals(1, deck.getCards().size());
+        assertEquals(107, deck.getPlayedCards().size());
+        deck.draw();
+        //One card is on the table and one in the hand,  total 108
+        assertEquals(106, deck.getCards().size());
+        assertEquals(1, deck.getPlayedCards().size());
 	}
 
 }

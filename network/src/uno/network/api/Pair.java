@@ -25,14 +25,16 @@ public class Pair<T, V> implements Serializable {
     }
 
     /**
-     * @return Gets the first value
+     * Gets the key value of the Pair
+     * @return Returns the key value
      */
     public T getKey() {
         return key;
     }
 
     /**
-     * @return Gets the second value
+     * Gets the value of the Pair
+     * @return Returns the value
      */
     public V getValue() {
         return value;

@@ -3,8 +3,7 @@ package uno.logic;
 import java.util.ArrayList;
 import java.util.UUID;
 /**
- * Has all info about the players such as their hands, their unique identifier and if they "called UNO" or not
- * <p>
+ * Has all info about the players such as their hands, their unique identifier and if they "called UNO" or not<br>
  * This class can also draw cards for the player and put it in their hand
  * 
  * @author Daniel Rydén &amp; Fressia Merino
@@ -68,6 +67,7 @@ public class Player {
 	}
 	
 	/**
+	 * Gets the cards that the player have
 	 * @return cards Returns the cards that are in the player's hand
 	 */
 	public ArrayList<Card> getCards() {
@@ -75,9 +75,10 @@ public class Player {
 	}
 	
 	/**
+     * Gets the uno status of the player
 	 * @return uno A flag that checks if the player called Uno or not
 	 */
-	public boolean unoStatus() {
+	public boolean getUnoStatus() {
 		return uno;
 	}
 	

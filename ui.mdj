@@ -505,7 +505,7 @@
 												"$ref": "AAAAAAFZ1hClrldM+bE="
 											},
 											"name": "currentScreen",
-											"visibility": "public",
+											"visibility": "private",
 											"isStatic": false,
 											"isLeaf": false,
 											"type": {
@@ -1239,7 +1239,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+currentScreen: IScreen",
+											"text": "-currentScreen: IScreen",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},

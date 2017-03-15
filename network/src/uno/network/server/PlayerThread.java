@@ -127,6 +127,10 @@ public class PlayerThread extends Thread {
         }
     }
 
+    /**
+     * Gets the status if the thread is running or not
+     * @return Returns if the thread is still running or not
+     */
     public boolean isRunning() {
         return running;
     }

@@ -7,10 +7,13 @@ import uno.server.core.GameServer;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
 /**
- * 
- * @author nakhle
+ * Tests to test the player
+ * @author Daniel Rydén &amp; Fressia Merino
+ * @version 2017-03-03
  */
 public class PlayerTest {
 
@@ -18,24 +21,27 @@ public class PlayerTest {
 	private Deck deck;
 	private ArrayList<Card> cards;
 	private GameCore gameCore;
-	private GameServer gameServer;
-	
+
+    /**
+     * Setups the test
+     */
 	@Before
 	public void setUp() {
 		deck = new Deck();
-		gameCore = new GameCore(new GameServer());	
+		gameCore = new GameCore(null);
 		player = new Player("p1", deck, gameCore, UUID.randomUUID());
-		
 	}
-	
+
+    /**
+     * Tests if the player got the correct setup
+     */
 	@Test
 	public void setupTest() {
 		deck.setupDeck();
 		deck.shuffle();
 		player.setup();
 		cards = player.getCards();
-		assertTrue(cards.size() == 7);
-		
+		assertEquals(7, cards.size());
 	}
 
 }

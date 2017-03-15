@@ -11,12 +11,19 @@ import java.util.Scanner;
 
 /**
  * A test server for the network, not used in the game
+ * @author Gustaf Järgren
+ * @version 06-03-2017
  */
 public class TestServer implements IServerMessageListener {
 
     private NetworkServer networkServer;
     private Scanner scanner;
 
+    /**
+     * Creates a new test server for the network
+     * @param port The port to listen to
+     * @param players The max amount of players
+     */
     public TestServer(String port, String players) {
         networkServer = new NetworkServer(this, Integer.parseInt(port), Integer.parseInt(players));
         scanner = new Scanner(System.in);
@@ -42,6 +49,11 @@ public class TestServer implements IServerMessageListener {
         }
     }
 
+    /**
+     * Main entry point into the test server<br>
+     * Arguments needed are: [port] [maxPlayers]
+     * @param args The arguments used to listen to and amount of players max
+     */
     public static void main(String[] args) {
         new TestServer(args[0], args[1]);
     }

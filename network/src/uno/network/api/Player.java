@@ -15,7 +15,7 @@ public class Player implements Serializable {
     private UUID id;
 
     /**
-     *
+     * Creates a new Player instance
      * @param inetAddress The InetAddress of the client
      * @param id The UUID that for the client
      */
@@ -25,6 +25,7 @@ public class Player implements Serializable {
     }
 
     /**
+     * Gets the address of the player
      * @return The InetAddress associated to this player
      */
     public InetAddress getAddress() {
@@ -32,7 +33,8 @@ public class Player implements Serializable {
     }
 
     /**
-     * @return THe UUID associated to this player
+     * Gets the UUID of the player
+     * @return The UUID associated to this player
      */
     public UUID getID() {
         return id;

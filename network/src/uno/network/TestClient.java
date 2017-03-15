@@ -9,11 +9,18 @@ import java.util.Scanner;
 
 /**
  * A test client for the network, not used in the game
+ * @author Gustaf Järgren
+ * @version 06-03-2017
  */
 public class TestClient implements IClientMessageListener {
 
     private Scanner scanner;
 
+    /**
+     * Creates a new test client for the network
+     * @param host The host address to connect to
+     * @param port The port to connect to
+     */
     public TestClient(String host, String port) {
         NetworkClient client = new NetworkClient(this, host, Integer.parseInt(port));
         scanner = new Scanner(System.in);
@@ -39,6 +46,11 @@ public class TestClient implements IClientMessageListener {
         }
     }
 
+    /**
+     * Main entry point into the test client<br>
+     * Arguments needed are: [host] [port]
+     * @param args The arguments used to point the client to the server
+     */
     public static void main(String[] args) {
         new TestClient(args[0], args[1]);
     }

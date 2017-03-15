@@ -12,7 +12,6 @@ import uno.network.server.NetworkServer;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -27,15 +26,14 @@ public class GameServer implements IServerMessageListener {
     private Player hostPlayer;
     private int currentPlayerCount;
     private ServerInteractions interactions;
-    public ArrayList<String> names;
     private int port;
     private int maxPlayers;
 
     public static Logger logger = LogManager.getLogger("UnoServer");
 
     /**
-     * Starts server with default settings<p>
-     * Port: 55333<p>
+     * Starts server with default settings<br>
+     * Port: 55333<br>
      * MaxPlayers: 4
      */
     public GameServer() {
@@ -50,12 +48,14 @@ public class GameServer implements IServerMessageListener {
     public GameServer(int port, int maxPlayers) {
         this.port = port;
         this.maxPlayers = maxPlayers;
-        names = new ArrayList<>(maxPlayers);
         logger.info("Starting Uno Server");
 
         startNetwork();
     }
 
+    /**
+     * Initiates and starts the network thread
+     */
     private void startNetwork() {
         networkServer = new NetworkServer(this, port, maxPlayers);
         networkServer.start();
@@ -110,7 +110,7 @@ public class GameServer implements IServerMessageListener {
 
             if (data.equals("start-game") && core == null && currentPlayerCount >= 2) {
                 core = new GameCore(this);
-                core.setupGame(currentPlayerCount, networkServer.getPlayerUUIDs());
+                core.setupGame(currentPlayerCount, networkServer.getPlayerUUIDs(), true);
                 sendToAllPlayers("game-started");
                 interactions = new ServerInteractions(this, core, networkServer);
                 logger.info("Game Started");
@@ -119,16 +119,18 @@ public class GameServer implements IServerMessageListener {
     }
 
     /**
+     * Gets the interactions instance for the current game
      * @return The interactions object used by this server
      */
     public ServerInteractions getInteractions() {
         return interactions;
     }
 
-    public void sendToPlayer(Player player, Object message) {
-        networkServer.sendToPlayer(player, new Packet(MessageType.MESSAGE, message));
-    }
-
+    /**
+     * Sends a message to a specific player
+     * @param uuid The uuid of the player to send to
+     * @param message The message to send
+     */
     public void sendToPlayer(UUID uuid, Object message) {
         networkServer.sendToPlayer(networkServer.getPlayerFromUUID(uuid), new Packet(MessageType.MESSAGE, message));
     }
@@ -143,11 +145,11 @@ public class GameServer implements IServerMessageListener {
 
     /**
      * Ease of use method for sending a message to all players except the one provided
-     * @param player The player no to send to
+     * @param uuid The uuid of the player no to send to
      * @param message The message to be sent
      */
-    public void sendToAllPlayersExcept(Player player, Object message) {
-        networkServer.sendToAllExcept(player, new Packet(MessageType.MESSAGE, message));
+    public void sendToAllPlayersExcept(UUID uuid, Object message) {
+        networkServer.sendToAllExcept(networkServer.getPlayerFromUUID(uuid), new Packet(MessageType.MESSAGE, message));
     }
 
     /**

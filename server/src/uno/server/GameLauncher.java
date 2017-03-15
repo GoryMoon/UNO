@@ -10,8 +10,12 @@ import uno.server.core.GameServer;
  */
 public class GameLauncher {
 
-    //TODO parse args
+    /**
+     * The main entry point of the server
+     * @param args The arguments provided when started
+     */
     public static void main(String[] args) {
+        //TODO parse args
         new GameServer(55333, 4);
     }
 

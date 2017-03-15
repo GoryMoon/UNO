@@ -26,6 +26,7 @@ public class Card {
 	}
 
 	/**
+	 * Gets the color of the card
 	 * @return color Returns the color of the card
 	 */
 	public Color getColor() {
@@ -33,6 +34,7 @@ public class Card {
 	}
 
 	/**
+     * Gets the type of card it is
 	 * @return type Returns the type of the card
 	 */
 	public Type getType() {
@@ -40,6 +42,7 @@ public class Card {
 	}
 	
 	/**
+     * Get the number of the card, -1 if it's a special card
 	 * @return type Returns the number of the card, if it's a special card that has no number the number is -1
 	 */
 	public int getNumber() {

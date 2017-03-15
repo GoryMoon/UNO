@@ -1,7 +1,3 @@
-uno.client
-uno.client.cmd
-uno.client.cmd.pages
-uno.client.cmd.sound
 uno.logic
 uno.network
 uno.network.api
