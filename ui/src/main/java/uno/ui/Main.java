@@ -14,7 +14,9 @@ import uno.ui.sound.MediaPlayer;
 import java.util.ArrayList;
 
 /**
- * Created by Kungen on 2017-02-12.
+ * Main handles messages to and from the server and sets the screen
+ * @author Gustaf Järgren
+ * @version 2017-03-03
  */
 public class Main implements IClientMessageListener {
 
@@ -27,6 +29,10 @@ public class Main implements IClientMessageListener {
         (new Thread(new MediaPlayer("sound/EpicSaxGuy.mp3"))).start();
     }
 
+    /**
+     * Sets the screen to the provided screen
+     * @param screen The screen to change to
+     */
     public void setScreen(IScreen screen) {
         if (currentScreen != null)
             currentScreen.hide();
@@ -35,6 +41,10 @@ public class Main implements IClientMessageListener {
         currentScreen.show();
     }
 
+    /**
+     * The main entry point into the ui, setups a new Main instance
+     * @param args The arguments provided for the program
+     */
     public static void main (String[] args) {
         new Main();
 
@@ -88,6 +98,10 @@ public class Main implements IClientMessageListener {
         }
     }
 
+    /**
+     * Sends a message to the server
+     * @param message The message to send to the server
+     */
     public void sendMessageToServer(Object message) {
         networkClient.sendToServer(new Packet(MessageType.MESSAGE, message));
     }

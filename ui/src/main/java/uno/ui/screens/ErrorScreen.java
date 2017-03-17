@@ -6,7 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Kungen on 2017-02-14.
+ * This class displays error messages to the user
+ * @author Betina Andersson &amp; Shahad Naji
+ * @version  2017-03-03
  */
 public class ErrorScreen implements IScreen{
 
@@ -29,8 +31,7 @@ public class ErrorScreen implements IScreen{
 
         JButton leaveButton = new JButton("leave");
         leaveButton.addActionListener(e -> {
-            MainMenu menu = new MainMenu();
-            main.setScreen(menu);
+            main.setScreen(ScreenInstances.getMainMenu());
         });
 
         frame.add(background);

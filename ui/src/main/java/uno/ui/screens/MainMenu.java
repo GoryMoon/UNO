@@ -6,7 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Kungen on 2017-02-14.
+ * The main menu of the game, contains the join game button used to join a game
+ * @author Betina Andersson &amp; Shahad Naji
+ * @version 2017-03-03
  */
 public class MainMenu implements IScreen {
 
@@ -28,8 +30,7 @@ public class MainMenu implements IScreen {
         createButton.setEnabled(false); //Disabled
         createButton.setToolTipText("Disabled, join game auto makes first to host");
         createButton.addActionListener(e -> {
-            GameLobby lobby = new GameLobby();
-            main.setScreen(lobby);
+            main.setScreen(ScreenInstances.getGameLobby());
         });
 
         JButton joinButton = new JButton("Join game");

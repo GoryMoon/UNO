@@ -6,11 +6,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 
+/**
+ * A popup window that shows options to quit or resume game.
+ * @author Betina Andersson &amp; Shahad Naji
+ * @version 2017-03-03
+ */
 public class PauseOverlay {
 
     private JFrame frame;
     private Main main;
 
+    /**
+     * Shows the popup in the middle of the screen
+     */
     public void show() {
         frame = new JFrame("Pause Game");
         frame.setLayout(new FlowLayout());
@@ -46,10 +54,17 @@ public class PauseOverlay {
         frame.setVisible(true);
     }
 
+    /**
+     * Sets the Main instance reference to be accessed in this class
+     * @param main The main instance to relate this to
+     */
     public void setMain(Main main) {
         this.main = main;
     }
 
+    /**
+     * Closes the popup window
+     */
     private void close() {
         frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }

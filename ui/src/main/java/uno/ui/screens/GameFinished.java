@@ -7,7 +7,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-
+/**
+ * Displays the order that the players got in when the game is over
+ * @author Betina Andersson &amp; Shahad Naji
+ * @version 2017-03-03
+ */
 public class GameFinished implements IScreen {
 
     private JFrame frame;
@@ -34,7 +38,7 @@ public class GameFinished implements IScreen {
                 super.paintComponent(g);
             }
         };
-        winListPanel.setBackground(new Color(255, 114, 49, 119));
+        winListPanel.setBackground(new Color(255, 114, 49, 156));
         winListPanel.setLayout(new BoxLayout(winListPanel, BoxLayout.Y_AXIS));
         winListPanel.setOpaque(false);
 
@@ -60,6 +64,10 @@ public class GameFinished implements IScreen {
         this.main = main;
     }
 
+    /**
+     * Creates labels with the players names, positions and cards left at end of game to display
+     * @param winList is an list of the players names and the number of cards left
+     */
     public void setWinList(ArrayList<Pair<String, Integer>> winList) {
         winListPanel.add(new JLabel(""));
         winListPanel.add(new JLabel(""));
